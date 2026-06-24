@@ -143,29 +143,47 @@
     .about-text p { font-size: 11pt; color: #b3b3b3; margin-bottom: 20px; }
     @media(max-width: 900px) { .about-grid { flex-direction: column; } }
 
-    /* MODAL DE DETALHES */
-    .modal { display: none; position: fixed; z-index: 2000; left: 0; top: 0; width: 100%; height: 100%; overflow: auto; background-color: rgba(0, 0, 0, 0.95); align-items: center; justify-content: center; }
-    .modal-content { background-color: var(--bg-secondary); border: 1px solid var(--border-color); border-radius: 8px; width: 90%; max-width: 1100px; display: flex; flex-direction: row; overflow: hidden; position: relative; box-shadow: 0 10px 40px rgba(0,0,0,0.8); }
+    /* WHATSAPP FLOAT */
+    .wpp-float { position: fixed; bottom: 30px; right: 30px; background-color: #25D366; color: #fff; border-radius: 50%; width: 60px; height: 60px; display: flex; align-items: center; justify-content: center; font-size: 32px; box-shadow: 2px 2px 10px rgba(0,0,0,0.3); z-index: 1500; transition: all 0.3s ease; }
+    .wpp-float:hover { transform: scale(1.1); color: #fff; background-color: #20b858; }
+    @media(max-width: 768px) { .wpp-float { bottom: 20px; right: 20px; width: 50px; height: 50px; font-size: 26px; } }
+
+    /* MODAL DE DETALHES (RESPONSIVO E SEM BARRAS OCULTAS) */
+    .modal { display: none; position: fixed; z-index: 2000; left: 0; top: 0; width: 100%; height: 100%; overflow-y: auto; background-color: rgba(0, 0, 0, 0.95); padding: 50px 15px; align-items: flex-start; justify-content: center; }
+    .modal-content { margin: auto; background-color: var(--bg-secondary); border: 1px solid var(--border-color); border-radius: 8px; width: 100%; max-width: 1100px; display: flex; flex-direction: row; position: relative; box-shadow: 0 10px 40px rgba(0,0,0,0.8); height: auto; }
+    
     .close-modal { position: absolute; top: 20px; right: 25px; color: var(--text-muted); font-size: 30px; font-weight: bold; cursor: pointer; z-index: 10; transition: color 0.2s; }
     .close-modal:hover { color: var(--accent); }
+    
     .modal-gallery-pane { width: 55%; position: relative; background-color: #000; display: flex; flex-direction: column; }
-    .modal-slider-main { width: 100%; height: 480px; display: flex; align-items: center; justify-content: center; overflow: hidden; }
+    .modal-slider-main { width: 100%; flex-grow: 1; min-height: 450px; display: flex; align-items: center; justify-content: center; overflow: hidden; }
     .modal-slider-main img { width: 100%; height: 100%; object-fit: contain; }
+    
     .slider-nav { position: absolute; top: 50%; transform: translateY(-50%); background-color: rgba(0,0,0,0.5); border: 1px solid var(--border-color); color: #fff; font-size: 20px; width: 45px; height: 45px; border-radius: 50%; cursor: pointer; display: flex; align-items: center; justify-content: center; }
     .slider-nav:hover { background-color: var(--accent); color: #000; }
     .slider-nav.prev { left: 15px; }
     .slider-nav.next { right: 15px; }
+    
     .modal-slider-thumbnails { display: flex; gap: 10px; padding: 15px; background-color: var(--bg-primary); overflow-x: auto; }
     .thumb-img { width: 60px; height: 60px; object-fit: cover; border: 1.5px solid var(--border-color); border-radius: 3px; cursor: pointer; opacity: 0.6; transition: all 0.2s; }
     .thumb-img.active, .thumb-img:hover { opacity: 1; border-color: var(--accent); }
-    .modal-specs-pane { width: 45%; padding: 40px; overflow-y: auto; max-height: 600px; display: flex; flex-direction: column; }
-    .modal-specs-pane h2 { font-size: 18pt; color: #fff; text-transform: uppercase; margin-bottom: 10px; }
-    .specs-table { width: 100%; margin-bottom: 30px; border-collapse: collapse; }
-    .specs-table td { padding: 12px 0; border-bottom: 1px solid var(--border-color); font-size: 9.5pt; }
+    
+    .modal-specs-pane { width: 45%; padding: 40px; display: flex; flex-direction: column; height: auto; }
+    .modal-specs-pane h2 { font-size: 18pt; color: #fff; text-transform: uppercase; margin-bottom: 10px; padding-right: 30px; }
+    
+    /* Proteção contra esticamento por links longos na tabela */
+    .specs-table { width: 100%; margin-bottom: 30px; border-collapse: collapse; table-layout: fixed; }
+    .specs-table td { padding: 12px 10px 12px 0; border-bottom: 1px solid var(--border-color); font-size: 9.5pt; word-wrap: break-word; overflow-wrap: break-word; }
     .specs-table td.label { color: var(--text-muted); width: 35%; font-weight: bold; text-transform: uppercase; }
     .specs-table td.val { color: #fff; }
+    
     .modal-btn { display: block; width: 100%; text-align: center; background-color: var(--accent); color: #000; padding: 15px; border-radius: 4px; font-weight: bold; text-transform: uppercase; margin-top: auto; }
-    @media(max-width: 900px) { .modal-content { flex-direction: column; } .modal-gallery-pane, .modal-specs-pane { width: 100%; } .modal-specs-pane { max-height: none; } }
+    
+    @media(max-width: 900px) { 
+      .modal-content { flex-direction: column; } 
+      .modal-gallery-pane, .modal-specs-pane { width: 100%; } 
+      .modal-slider-main { min-height: 300px; }
+    }
 
     /* FOOTER */
     .footer-main { background-color: #050505; padding: 60px 0 30px 0; border-top: 1px solid var(--border-color); }
@@ -464,9 +482,13 @@
     </div>
   </footer>
 
+  <!-- WHATSAPP FLUTUANTE -->
+  <a href="https://wa.me/5511995317881?text=Ol%C3%A1%2C%20estou%20no%20site%20e%20gostaria%20de%20falar%20a%20respeito%20do%20seu%20trabalho%20como%20luthier." target="_blank" class="wpp-float" aria-label="Falar no WhatsApp">
+    <i class="fa-brands fa-whatsapp"></i>
+  </a>
+
   <!-- SCRIPT INTEGRADO FINAL (LEITOR JSON DIRETO DENTRO DE ARQUIVOS .MD E .JSON) -->
   <script>
-    // === DADOS DO SEU REPOSITÓRIO GITHUB ===
     const GITHUB_USER = 'fabiopietrisinger-droid';
     const GITHUB_REPO = 'emerhand';
 
@@ -474,7 +496,6 @@
     let produtoAtivo = null;
     let fotoAtivaIndex = 0;
 
-    // === LÓGICA DE MENU MOBILE ===
     function toggleMenu() { document.getElementById("nav-menu").classList.toggle("active"); }
     function closeMenu() { document.getElementById("nav-menu").classList.remove("active"); }
     function toggleMobileDropdown() { if(window.innerWidth <= 992) { document.getElementById("drop-modelos").classList.toggle("active-mobile"); } }
@@ -485,7 +506,6 @@
       return urlBase + separador + 't=' + new Date().getTime();
     }
 
-    // === INICIALIZAÇÃO DA PÁGINA ===
     async function inicializarSite() {
       try {
         // 1. Renderiza Categorias (Lendo o JSON dentro dos .md)
@@ -497,12 +517,10 @@
           const footerCat = document.getElementById('footer-categorias');
 
           for (const arquivo of arquivosCat) {
-            // Aceita arquivos .md ou .json
             if ((arquivo.name.endsWith('.json') || arquivo.name.endsWith('.md')) && arquivo.download_url) {
               try {
                 const resItem = await fetch(urlSemCache(arquivo.download_url));
                 const txtCat = await resItem.text();
-                // Limpa sujeira invisível do CMS e força a leitura como objeto JSON
                 const cleanTxt = txtCat.replace(/^[\u200B\u200C\u200D\u200E\u200F\uFEFF]/, "").trim();
                 const cat = JSON.parse(cleanTxt);
 
@@ -529,7 +547,6 @@
                 const resItem = await fetch(urlSemCache(arquivo.download_url));
                 const txtGuitarra = await resItem.text();
                 
-                // Limpeza por segurança e extração do JSON
                 const cleanTxtG = txtGuitarra.replace(/^[\u200B\u200C\u200D\u200E\u200F\uFEFF]/, "").trim();
                 const guitarra = JSON.parse(cleanTxtG);
 
@@ -686,10 +703,16 @@
       const wppLink = `https://wa.me/5511995317881?text=Olá Emerson, gostaria de ${statusText} guitarra ${encodeURIComponent(produtoAtivo.title || 'que vi no site')}.`;
       document.getElementById('modal-btn-wa').href = wppLink;
 
+      // Alterado para flex para alinhar o modal no topo e permitir rolagem natural
       document.getElementById('modal-detalhes').style.display = 'flex';
+      // Travar rolagem do fundo (opcional, mas boa prática)
+      document.body.style.overflow = 'hidden';
     }
 
-    function fecharModal() { document.getElementById('modal-detalhes').style.display = 'none'; }
+    function fecharModal() { 
+      document.getElementById('modal-detalhes').style.display = 'none'; 
+      document.body.style.overflow = 'auto'; // Restaurar rolagem
+    }
     
     function alternarFoto(index) {
       fotoAtivaIndex = index;
@@ -710,7 +733,11 @@
       alternarFoto(novoIndex);
     }
 
-    window.onclick = function(e) { if(e.target == document.getElementById('modal-detalhes')) fecharModal(); }
+    // Fechar ao clicar fora, cuidando para não fechar se clicar no conteúdo
+    window.onclick = function(e) { 
+      const modal = document.getElementById('modal-detalhes');
+      if(e.target == modal) fecharModal(); 
+    }
 
     document.addEventListener('DOMContentLoaded', inicializarSite);
   </script>
