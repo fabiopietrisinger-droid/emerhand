@@ -8,9 +8,6 @@
       "foto": "/images/uploads/[Headless Exotic] EmerHand Exotic 8 Cordas_ (1).jpg"
     },
     {
-      "foto": "/images/uploads/[Headless Exotic] EmerHand Exotic 8 Cordas_ (2).jpg"
-    },
-    {
       "foto": "/images/uploads/[Headless Exotic] EmerHand Exotic 8 Cordas_ (3).jpg"
     },
     {
@@ -21,9 +18,6 @@
     },
     {
       "foto": "/images/uploads/[Headless Exotic] EmerHand Exotic 8 Cordas_ (7).jpg"
-    },
-    {
-      "foto": "/images/uploads/[Headless Exotic] EmerHand Exotic 8 Cordas_ (8).jpg"
     },
     {
       "foto": "/images/uploads/[Headless Exotic] EmerHand Exotic 8 Cordas_ (9).jpg"
@@ -39,9 +33,6 @@
     },
     {
       "foto": "/images/uploads/[Headless Exotic] EmerHand Exotic 8 Cordas_ (13).jpg"
-    },
-    {
-      "foto": "/images/uploads/[Headless Exotic] EmerHand Exotic 8 Cordas_ (14).jpg"
     },
     {
       "foto": "/images/uploads/[Headless Exotic] EmerHand Exotic 8 Cordas_ (16).jpg"
