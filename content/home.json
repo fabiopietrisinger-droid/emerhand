@@ -12,9 +12,7 @@
     {
       "imagem": "/images/uploads/banner04.jpg"
     },
-    {
-      "imagem": "/images/uploads/banner05.jpg"
-    }
+    {}
   ],
   "sobre": {
     "titulo_sobre": "EmerHand Custom Guitars",
