@@ -30,9 +30,10 @@
     .container { width: 100%; max-width: 1200px; margin: 0 auto; padding: 0 20px; }
 
     /* NAVBAR & HAMBÚRGUER */
-    .header-main { background-color: rgba(10, 10, 10, 0.95); border-bottom: 1px solid var(--border-color); position: fixed; top: 0; width: 100%; z-index: 1000; padding: 15px 40px; display: flex; justify-content: space-between; align-items: center; }
+    .header-main { background-color: rgba(10, 10, 10, 0.95); border-bottom: 1px solid var(--border-color); position: fixed; top: 0; width: 100%; z-index: 1000; padding: 15px 0; }
+    .header-container { max-width: 1200px; margin: 0 auto; padding: 0 20px; display: flex; justify-content: space-between; align-items: center; width: 100%; }
     
-    .logo img { height: 45px; width: auto; object-fit: contain; } /* Placeholder do Logo */
+    .logo img { height: 125px; width: auto; object-fit: contain; transition: height 0.3s ease; } 
     
     .menu-toggle { display: none; font-size: 24px; color: #fff; cursor: pointer; }
     
@@ -53,8 +54,9 @@
 
     /* RESPONSIVO NAVBAR */
     @media screen and (max-width: 992px) {
+      .logo img { height: 100px; }
       .menu-toggle { display: block; }
-      .nav-links { position: fixed; top: 75px; left: -100%; width: 100%; height: calc(100vh - 75px); background-color: var(--bg-secondary); flex-direction: column; align-items: center; justify-content: flex-start; padding-top: 40px; transition: 0.3s; z-index: 999; }
+      .nav-links { position: fixed; top: 130px; left: -100%; width: 100%; height: calc(100vh - 130px); background-color: var(--bg-secondary); flex-direction: column; align-items: center; justify-content: flex-start; padding-top: 40px; transition: 0.3s; z-index: 999; }
       .nav-links.active { left: 0; }
       .nav-links a { font-size: 14pt; margin-bottom: 25px; }
       .dropdown:hover .dropdown-content { display: none; } /* Oculta hover no mobile */
@@ -62,7 +64,7 @@
     }
 
     /* HERO */
-    .hero-slider { height: 75vh; min-height: 550px; background-image: linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)), url('https://images.unsplash.com/photo-1550985616-10810253b84d?q=80&w=1920'); background-size: cover; background-position: center; display: flex; align-items: center; justify-content: center; text-align: center; padding-top: 80px; }
+    .hero-slider { height: 75vh; min-height: 550px; background-image: linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)), url('https://images.unsplash.com/photo-1550985616-10810253b84d?q=80&w=1920'); background-size: cover; background-position: center; display: flex; align-items: center; justify-content: center; text-align: center; padding-top: 155px; }
     .hero-content h1 { font-size: 36pt; color: #fff; text-transform: uppercase; letter-spacing: 4px; font-weight: 700; }
 
     /* SHOWROOM */
@@ -187,28 +189,29 @@
 
   <!-- NAVBAR COM SUBMENU E MENU HAMBÚRGUER -->
   <header class="header-main">
-    <div class="logo">
-      <!-- LOGO REAL -->
-      <img src="imagens/logo.png" alt="EmerHand">
-    </div>
-    
-    <div class="menu-toggle" onclick="toggleMenu()">
-      <i class="fa-solid fa-bars"></i>
-    </div>
-
-    <nav class="nav-links" id="nav-menu">
-      <a href="#hero" onclick="closeMenu()">Home</a>
-      <div class="dropdown" id="drop-modelos" onclick="toggleMobileDropdown()">
-        <a href="javascript:void(0)" class="dropbtn">Modelos <i class="fa-solid fa-caret-down"></i></a>
-        <div id="submenu-categorias" class="dropdown-content">
-          <!-- Categorias injetadas via JS -->
-        </div>
+    <div class="header-container">
+      <div class="logo">
+        <img src="imagens/logo.png" alt="EmerHand">
       </div>
-      <a href="#madeiras" onclick="closeMenu()">Madeiras</a>
-      <a href="#regras" onclick="closeMenu()">Orçamento</a>
-      <a href="#sobre" onclick="closeMenu()">O Luthier</a>
-      <a href="https://wa.me/5511995317881" target="_blank" class="nav-contact">WhatsApp</a>
-    </nav>
+      
+      <div class="menu-toggle" onclick="toggleMenu()">
+        <i class="fa-solid fa-bars"></i>
+      </div>
+
+      <nav class="nav-links" id="nav-menu">
+        <a href="#hero" onclick="closeMenu()">Home</a>
+        <div class="dropdown" id="drop-modelos" onclick="toggleMobileDropdown()">
+          <a href="javascript:void(0)" class="dropbtn">Modelos <i class="fa-solid fa-caret-down"></i></a>
+          <div id="submenu-categorias" class="dropdown-content">
+            <!-- Categorias injetadas via JS -->
+          </div>
+        </div>
+        <a href="#madeiras" onclick="closeMenu()">Madeiras</a>
+        <a href="#regras" onclick="closeMenu()">Orçamento</a>
+        <a href="#sobre" onclick="closeMenu()">O Luthier</a>
+        <a href="https://wa.me/5511995317881" target="_blank" class="nav-contact">WhatsApp</a>
+      </nav>
+    </div>
   </header>
 
   <!-- HERO -->
@@ -250,7 +253,7 @@
     </div>
   </section>
 
-  <!-- MADEIRAS (ICONES + TEXTO ORIGINAL) -->
+  <!-- MADEIRAS -->
   <section id="madeiras" class="woods-section">
     <div class="container">
       <h2 class="section-title">Acervo de Madeiras</h2>
@@ -311,7 +314,6 @@
         </div>
       </div>
       
-      <!-- Box Pré Prontos -->
       <div class="pre-prontos-box">
         <h4>Pré Prontos</h4>
         <p>Em caso de dúvidas sempre possuo modelos de corpo e braço pré prontos para consulta visual via whatsApp, o que também agiliza a construção de sua headless quanto aos prazos de entrega.</p>
@@ -325,6 +327,7 @@
       <h2 class="section-title">Regras para seu orçamento base</h2>
       
       <div class="rules-container">
+        
         <div class="rule-block">
           <h3>Uso de madeiras nacionais</h3>
           <p>O uso de madeiras nacionais permite que a faixa de preço fique dentro do esperado por evitar as variações do Dolar($) e das taxas de importação que constantemente sofrem alterações. São madeiras de alta qualidade que em nada perdem para as importadas sendo até superior em muitos aspectos. Existe uma grande variedade de madeiras exóticas com muita beleza. Posso ajudar e aconselhar em suas escolhas para que seu instrumento fique dentro do seu gosto e objetivo.</p>
@@ -342,14 +345,22 @@
 
         <div class="rule-block">
           <h3>Uso de trastes em Inox da marca DHP</h3>
-          <p>Nos tamanhos Jumbo perfil Baixo ( 24HS), Medio (27HS), Alto(29HS) e Super alto(30HS) São trastes de excelente qualidades.<br><br><strong>Uso da elétrica ALPHA</strong></p>
+          <p>Nos tamanhos Jumbo perfil Baixo ( 24HS), Medio (27HS), Alto(29HS) e Super alto(30HS) São trastes de excelente qualidades.</p>
+        </div>
+
+        <div class="rule-block">
+          <h3>Uso da elétrica ALPHA</h3>
         </div>
 
         <div class="rule-block">
           <h3>Acabamento e Modelos</h3>
-          <p><strong>Acabamento:</strong> Natural Fosco, Acetinado ou semi-brilho nos materiais Cera, Tung Oil ou Verniz Poliester. Qualquer outro tipo de acabamento, verniz ou pintura solida pode ser orçado com o Pintor especialista em instrumentos.<br><br>
-          <strong>Os modelos disponíveis são os demonstrados aqui no site:</strong> EmerHand Headless Exotic e EmerHand Headless Modern podendo sem em padão Standard 25´5” polegadas ( Padrão Stratocaster ) ou MULTISCALE 25`5”x 24`75” As escolhas contam ainda com opções de Hallow Body, Solidas, Chamber e opções diversas de arredondamento dos cantos dianteiros e traseiros assim como diferentes chanfros e alívios. Tudo à combinar.</p>
+          <p>Acabamento: Natural Fosco, Acetinado ou semi-brilho nos materiais Cera, Tung Oil ou Verniz Poliester. Qualquer outro tipo de acabamento, verniz ou pintura solida pode ser orçado com o Pintor especialista em instrumentos.</p>
         </div>
+
+        <div class="rule-block">
+          <p>Os modelos disponíveis são os demonstrados aqui no site: EmerHand Headless Exotic e EmerHand Headless Modern podendo sem em padão Standard 25´5” polegadas ( Padrão Stratocaster ) ou MULTISCALE 25`5”x 24`75” As escolhas contam ainda com opções de Hallow Body, Solidas, Chamber e opções diversas de arredondamento dos cantos dianteiros e traseiros assim como diferentes chanfros e alívios. Tudo à combinar.</p>
+        </div>
+
       </div>
 
       <!-- Bloco: Dúvidas CTA -->
@@ -398,7 +409,7 @@
   <!-- MODAL -->
   <div id="modal-detalhes" class="modal">
     <div class="modal-content">
-      <span class="close-modal" onclick="fecharModal()">&times;</span>
+      <span class="close-modal" onclick="fecharModal()">×</span>
       
       <div class="modal-gallery-pane">
         <div class="modal-slider-main">
@@ -448,12 +459,12 @@
         <a href="https://www.facebook.com/emerhandcustomguitars.emersonsantos" target="_blank"><i class="fa-brands fa-facebook"></i></a>
         <a href="https://www.instagram.com/emerhand_luthier/" target="_blank"><i class="fa-brands fa-instagram"></i></a>
       </div>
-      <p>&copy; 2026 EmerHand Custom Guitars. Todos os direitos reservados. Emerson Santos Luthier.</p>
+      <p>© 2026 EmerHand Custom Guitars. Todos os direitos reservados. Emerson Santos Luthier.</p>
       <p class="dev-credits">Desenvolvido por <a href="https://singwebdesign.com.br/" target="_blank">Sing Web Design</a></p>
     </div>
   </footer>
 
-  <!-- SCRIPT INTEGRADO FINAL (CONEXÃO DIRETA COM GITHUB/PAGES CMS) -->
+  <!-- SCRIPT INTEGRADO FINAL (LEITOR JSON DIRETO DENTRO DE ARQUIVOS .MD E .JSON) -->
   <script>
     // === DADOS DO SEU REPOSITÓRIO GITHUB ===
     const GITHUB_USER = 'fabiopietrisinger-droid';
@@ -468,14 +479,17 @@
     function closeMenu() { document.getElementById("nav-menu").classList.remove("active"); }
     function toggleMobileDropdown() { if(window.innerWidth <= 992) { document.getElementById("drop-modelos").classList.toggle("active-mobile"); } }
 
-    // === INICIALIZAÇÃO DA PÁGINA (BUSCANDO DO GITHUB COM ANTI-CACHE) ===
+    function urlSemCache(urlBase) {
+      if (!urlBase) return '';
+      const separador = urlBase.includes('?') ? '&' : '?';
+      return urlBase + separador + 't=' + new Date().getTime();
+    }
+
+    // === INICIALIZAÇÃO DA PÁGINA ===
     async function inicializarSite() {
       try {
-        // QUEBRADOR DE CACHE: Adiciona a data e hora atual em milissegundos na URL
-        const noCache = '?t=' + new Date().getTime();
-
-        // 1. Renderiza Categorias (Menus e Filtros)
-        const resCat = await fetch(`https://api.github.com/repos/${GITHUB_USER}/${GITHUB_REPO}/contents/content/categorias${noCache}`);
+        // 1. Renderiza Categorias (Lendo o JSON dentro dos .md)
+        const resCat = await fetch(urlSemCache(`https://api.github.com/repos/${GITHUB_USER}/${GITHUB_REPO}/contents/content/categorias`));
         if(resCat.ok) {
           const arquivosCat = await resCat.json();
           const submenu = document.getElementById('submenu-categorias');
@@ -483,29 +497,48 @@
           const footerCat = document.getElementById('footer-categorias');
 
           for (const arquivo of arquivosCat) {
-            if (arquivo.name.endsWith('.json')) {
-              const resItem = await fetch(arquivo.download_url + noCache);
-              const cat = await resItem.json();
+            // Aceita arquivos .md ou .json
+            if ((arquivo.name.endsWith('.json') || arquivo.name.endsWith('.md')) && arquivo.download_url) {
+              try {
+                const resItem = await fetch(urlSemCache(arquivo.download_url));
+                const txtCat = await resItem.text();
+                // Limpa sujeira invisível do CMS e força a leitura como objeto JSON
+                const cleanTxt = txtCat.replace(/^[\u200B\u200C\u200D\u200E\u200F\uFEFF]/, "").trim();
+                const cat = JSON.parse(cleanTxt);
 
-              if(submenu) submenu.innerHTML += `<a href="#loja" onclick="filtrarCategoria('${cat.title}'); closeMenu()">${cat.title}</a>`;
-              if(botoesFiltros) botoesFiltros.innerHTML += `<button class="filter-btn" onclick="filtrarCategoria('${cat.title}')">${cat.title}</button>`;
-              if(footerCat) footerCat.innerHTML += `<li><a href="#loja" onclick="filtrarCategoria('${cat.title}')">${cat.title}</a></li>`;
+                if(submenu && cat.title) submenu.innerHTML += `<a href="#loja" onclick="filtrarCategoria('${cat.title}'); closeMenu()">${cat.title}</a>`;
+                if(botoesFiltros && cat.title) botoesFiltros.innerHTML += `<button class="filter-btn" onclick="filtrarCategoria('${cat.title}')">${cat.title}</button>`;
+                if(footerCat && cat.title) footerCat.innerHTML += `<li><a href="#loja" onclick="filtrarCategoria('${cat.title}')">${cat.title}</a></li>`;
+              } catch (e) {
+                console.error("Erro na categoria", arquivo.name, e);
+              }
             }
           }
         }
 
-        // 2. Renderiza Guitarras
-        const resLista = await fetch(`https://api.github.com/repos/${GITHUB_USER}/${GITHUB_REPO}/contents/content/guitarras${noCache}`);
+        // 2. Renderiza Guitarras (Lendo o JSON puro dentro dos .md gerados pelo CMS)
+        const resLista = await fetch(urlSemCache(`https://api.github.com/repos/${GITHUB_USER}/${GITHUB_REPO}/contents/content/guitarras`));
         if(resLista.ok) {
           const arquivos = await resLista.json();
           const grid = document.getElementById('grid-guitarras');
           grid.innerHTML = ''; 
           
           for (const arquivo of arquivos) {
-            if (arquivo.name.endsWith('.json')) {
-              const resItem = await fetch(arquivo.download_url + noCache);
-              const guitarra = await resItem.json();
-              todosOsProdutos.push(guitarra);
+            if ((arquivo.name.endsWith('.json') || arquivo.name.endsWith('.md')) && arquivo.download_url) {
+              try {
+                const resItem = await fetch(urlSemCache(arquivo.download_url));
+                const txtGuitarra = await resItem.text();
+                
+                // Limpeza por segurança e extração do JSON
+                const cleanTxtG = txtGuitarra.replace(/^[\u200B\u200C\u200D\u200E\u200F\uFEFF]/, "").trim();
+                const guitarra = JSON.parse(cleanTxtG);
+
+                if (guitarra && guitarra.title) {
+                  todosOsProdutos.push(guitarra);
+                }
+              } catch (e) {
+                console.error("Erro na guitarra", arquivo.name, e);
+              }
             }
           }
           renderizarProdutos(todosOsProdutos);
@@ -513,15 +546,13 @@
           document.getElementById('grid-guitarras').innerHTML = '<p class="loading" style="grid-column: 1/-1;">Nenhuma guitarra encontrada. Certifique-se de que o repositório é Público e que há itens cadastrados.</p>';
         }
 
-        // 3. Renderiza Institucional (HOME) - Banners e Sobre
-        const resHome = await fetch(`https://api.github.com/repos/${GITHUB_USER}/${GITHUB_REPO}/contents/content/home.json${noCache}`);
+        // 3. Renderiza Institucional (HOME)
+        const resHome = await fetch(urlSemCache(`https://api.github.com/repos/${GITHUB_USER}/${GITHUB_REPO}/contents/content/home.json`));
         if(resHome.ok) {
           const dataHomeRaw = await resHome.json();
-          // Tratamento para decodificar caracteres especiais e acentos do GitHub Base64
           const decodedContent = decodeURIComponent(escape(atob(dataHomeRaw.content)));
           const homeData = JSON.parse(decodedContent);
           
-          // Troca os banners
           if(homeData.banners && homeData.banners.length > 0) {
              const hero = document.getElementById('hero');
              if (hero) hero.style.backgroundImage = `linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)), url('${homeData.banners[0].imagem}')`;
@@ -530,7 +561,6 @@
              if(heroTitulo && homeData.banners[0].titulo) heroTitulo.innerText = homeData.banners[0].titulo;
           }
 
-          // Troca a área Sobre
           if(homeData.sobre) {
              const conteudoSobre = document.getElementById('conteudo-sobre');
              if (conteudoSobre) {
@@ -567,12 +597,11 @@
         const estaVendido = guitarra.vendido === true || guitarra.vendido === "true";
         const status = estaVendido ? '<span class="badge-status vendido">Vendido</span>' : '<span class="badge-status disponivel">Disponível</span>';
         
-        const card = document.createElement('div');
-        card.className = 'card-instrumento';
-        
         const imgSrc = guitarra.image ? guitarra.image : 'https://placehold.co/600x400/121212/d4af37?text=Sem+Foto';
         const descText = guitarra.body ? guitarra.body.replace(/(<([^>]+)>)/gi, "").substring(0, 80) + '...' : 'Clique para ver as especificações.';
 
+        const card = document.createElement('div');
+        card.className = 'card-instrumento';
         card.innerHTML = `
           <div class="img-wrapper" onclick="abrirModal(${idx})">
             <img src="${imgSrc}" alt="${guitarra.title || 'Instrumento'}">
@@ -621,8 +650,7 @@
       if(produtoAtivo.galeria && produtoAtivo.galeria.length > 0) {
         produtoAtivo.galeria.forEach((imgObj, fIdx) => {
           const thumb = document.createElement('img');
-          // No Pages CMS, imagens de lista podem vir como string direta ou objeto. Ajuste defensivo:
-          const urlImg = typeof imgObj === 'string' ? imgObj : imgObj.foto;
+          const urlImg = typeof imgObj === 'string' ? imgObj : imgObj.foto; 
           thumb.src = urlImg;
           thumb.className = `thumb-img ${fIdx === 0 ? 'active' : ''}`;
           thumb.onclick = () => alternarFoto(fIdx);
