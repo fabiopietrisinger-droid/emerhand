@@ -188,8 +188,8 @@
   <!-- NAVBAR COM SUBMENU E MENU HAMBÚRGUER -->
   <header class="header-main">
     <div class="logo">
-      <!-- PLACEHOLDER LOGO -->
-      <img src="https://placehold.co/180x45/0a0a0a/d4af37?text=EmerHand+Logo" alt="EmerHand">
+      <!-- LOGO REAL -->
+      <img src="imagens/logo.png" alt="EmerHand">
     </div>
     
     <div class="menu-toggle" onclick="toggleMenu()">
@@ -232,7 +232,7 @@
             São construídas conforme meu acervo de madeiras e itens que consigo com os fornecedores de madeiras e peças em diferentes épocas. Uso combinações que experimento em minha oficina e finalizo os instrumentos conforme condições de tempo e processos que aproveito enquanto construo as guitarras encomendadas pelos clientes. Por isso uma guitarras exposta 'à pronta entrega' no site diz respeito a única peça em exposição, e não uma quantidade de instrumentos com essas características. A título de apreciação e para ajudar em suas escolhas, as guitarras vendidas permanecem no site em exposição com o selo de “VENDIDO”
           </p>
         </div>
-        <div class="split-info-image" style="background-image: url('https://images.unsplash.com/photo-1550985616-10810253b84d?q=80&w=800');"></div>
+        <div class="split-info-image" style="background-image: url('imagens/expostas.jpg');"></div>
       </div>
 
       <!-- Filtros -->
@@ -360,7 +360,7 @@
             As informações sobre orçamentos, materiais e acabamentos aqui contidas visam uma filtragem para um melhor entendimento das opções e uma ideia base para um orçamento. Como se trata de uma guitarra personalizada e com muitas variáveis e detalhes é esperado que dúvidas ainda fiquem e uma consulta mais “Pessoal” se faça necessária. Por isso sinta-se à vontade para um contato via whatsApp para esclarecimentos. Deixe seu nome e suas dúvidas sobre a construção e orçamento final de sua Headless Custom, assim como prazos e parcelamentos e assim que possível responderei.<br><br>Obrigado ! Emerson Santos Luthier EmerHand Custom Guitars
           </p>
         </div>
-        <div class="split-info-image" style="background-image: url('https://images.unsplash.com/photo-1511192336575-5a79af67a629?q=80&w=800');"></div>
+        <div class="split-info-image" style="background-image: url('imagens/duvidas.jpg');"></div>
       </div>
     </div>
   </section>
@@ -437,7 +437,7 @@
         <h4>Contato</h4>
         <ul class="contact-list">
           <li><a href="https://wa.me/5511995317881" target="_blank" class="btn-footer"><i class="fa-brands fa-whatsapp"></i> (11) 99531-7881</a></li>
-          <li><a href="#" class="btn-footer"><i class="fa-solid fa-envelope"></i> Fale por E-mail</a></li>
+          <li><a href="https://maps.google.com/?q=Av.+Bunduki,+357+SBC+SP" target="_blank" class="btn-footer"><i class="fa-solid fa-location-dot"></i> Av. Bunduki, 357 - SBC / SP</a></li>
         </ul>
       </div>
 
@@ -453,8 +453,16 @@
     </div>
   </footer>
 
-  <!-- SCRIPT INTEGRADO (FALLBACK COM TODAS AS GUITARRAS E FUNCIONALIDADES) -->
+  <!-- SCRIPT INTEGRADO FINAL (CONEXÃO DIRETA COM GITHUB/PAGES CMS) -->
   <script>
+    // === DADOS DO SEU REPOSITÓRIO GITHUB ===
+    const GITHUB_USER = 'fabiopietrisinger-droid';
+    const GITHUB_REPO = 'emerhand';
+
+    let todosOsProdutos = [];
+    let produtoAtivo = null;
+    let fotoAtivaIndex = 0;
+
     // === LÓGICA DE MENU MOBILE ===
     function toggleMenu() {
       document.getElementById("nav-menu").classList.toggle("active");
@@ -470,77 +478,59 @@
       }
     }
 
-    // === MOCK DE DADOS (CASO API GITHUB FALHE OU NÃO ESTEJA CONFIGURADA) ===
-    // Aqui estão as categorias e as guitarras estruturadas conforme solicitado
-    const categoriasMock = [
-      { title: "EmerHand Headless Exotic" },
-      { title: "EmerHand Headless Modern" },
-      { title: "Modelos Custom Variados" }
-    ];
+    // === INICIALIZAÇÃO DA PÁGINA (BUSCANDO DO GITHUB) ===
+    async function inicializarSite() {
+      try {
+        // 1. Renderiza Categorias (Menus e Filtros)
+        const resCat = await fetch(`https://api.github.com/repos/${GITHUB_USER}/${GITHUB_REPO}/contents/content/categorias`);
+        if(resCat.ok) {
+          const arquivosCat = await resCat.json();
+          const submenu = document.getElementById('submenu-categorias');
+          const botoesFiltros = document.getElementById('botoes-filtros');
+          const footerCat = document.getElementById('footer-categorias');
 
-    const guitarrasMock = [
-      {
-        title: "Headless Exotic HSS",
-        categoria: "EmerHand Headless Exotic",
-        vendido: true,
-        image: "https://images.unsplash.com/photo-1564186763535-ebb21ef5278f?q=80&w=600",
-        galeria: [{foto: "https://images.unsplash.com/photo-1564186763535-ebb21ef5278f?q=80&w=600"}, {foto: "https://images.unsplash.com/photo-1525201548942-d8c8709e4a88?q=80&w=600"}],
-        body: "Corpo: Freijó com Top em Imbuia\nBraço: Marfim 3 peças com longarina de Roxinho\nEscala: Jacarandá Paulista com marcação DOT lateral\nTrastes: Inox DHP 27HS\nPonte: Nova Headless Preta\nCaptação: Malagoli Custom 84 / HH777\nAcabamento: Tung Oil Acetinado"
-      },
-      {
-        title: "Headless Modern Multiscale",
-        categoria: "EmerHand Headless Modern",
-        vendido: false,
-        image: "https://images.unsplash.com/photo-1525201548942-d8c8709e4a88?q=80&w=600",
-        galeria: [{foto: "https://images.unsplash.com/photo-1525201548942-d8c8709e4a88?q=80&w=600"}],
-        body: "Escala em Leque: 25.5 a 24.75\nCorpo: Marupá muito leve e ressonante\nBraço: Mogno Imperial estabilizado\nEscala: Muiracatiara\nTrastes: Inox DHP Jumbo Alto\nPonte: Nova Headless Cromada\nCaptação: Malagoli DIRT (Cerâmico)"
-      },
-      {
-        title: "Exotic Chambered Natural",
-        categoria: "EmerHand Headless Exotic",
-        vendido: true,
-        image: "https://images.unsplash.com/photo-1510915361894-db8b60106cb1?q=80&w=600",
-        galeria: [{foto: "https://images.unsplash.com/photo-1510915361894-db8b60106cb1?q=80&w=600"}],
-        body: "Corpo: Cedro Rosa (Chambered/Aliviado)\nBraço: Tauarí Pardo com frisos pretos\nEscala: Vinhático\nPonte: Nova Headless Setin\nCaptação: Fishman Fluence (Fornecido pelo cliente)\nAcabamento: Verniz PU Semi-Brilho"
-      },
-      {
-        title: "Custom Shop T-Style Headless",
-        categoria: "Modelos Custom Variados",
-        vendido: false,
-        image: "https://images.unsplash.com/photo-1511192336575-5a79af67a629?q=80&w=600",
-        galeria: [{foto: "https://images.unsplash.com/photo-1511192336575-5a79af67a629?q=80&w=600"}],
-        body: "Corpo: Cerejeira\nBraço: Marfim puro\nEscala: Marfim com dot preto central\nTrastes: Inox DHP 24HS\nCaptação: Malagoli Custom 59\nAcabamento: Fosco Natural Cera"
+          for (const arquivo of arquivosCat) {
+            if (arquivo.name.endsWith('.json')) {
+              const resItem = await fetch(arquivo.download_url);
+              const cat = await resItem.json();
+
+              if(submenu) submenu.innerHTML += `<a href="#loja" onclick="filtrarCategoria('${cat.title}'); closeMenu()">${cat.title}</a>`;
+              if(botoesFiltros) botoesFiltros.innerHTML += `<button class="filter-btn" onclick="filtrarCategoria('${cat.title}')">${cat.title}</button>`;
+              if(footerCat) footerCat.innerHTML += `<li><a href="#loja" onclick="filtrarCategoria('${cat.title}')">${cat.title}</a></li>`;
+            }
+          }
+        }
+
+        // 2. Renderiza Guitarras
+        const resLista = await fetch(`https://api.github.com/repos/${GITHUB_USER}/${GITHUB_REPO}/contents/content/guitarras`);
+        if(resLista.ok) {
+          const arquivos = await resLista.json();
+          const grid = document.getElementById('grid-guitarras');
+          grid.innerHTML = ''; // Limpa a mensagem de "Carregando..."
+          
+          for (const arquivo of arquivos) {
+            if (arquivo.name.endsWith('.json')) {
+              const resItem = await fetch(arquivo.download_url);
+              const guitarra = await resItem.json();
+              todosOsProdutos.push(guitarra);
+            }
+          }
+          renderizarProdutos(todosOsProdutos);
+        } else {
+          // Se der erro 404 (Repo Privado ou Pasta Vazia)
+          document.getElementById('grid-guitarras').innerHTML = '<p class="loading" style="grid-column: 1/-1;">Nenhuma guitarra encontrada. Certifique-se de que o repositório é Público e que há itens cadastrados no Pages CMS.</p>';
+        }
+
+      } catch (error) {
+        console.error("Erro ao conectar com GitHub:", error);
+        document.getElementById('grid-guitarras').innerHTML = '<p class="loading" style="grid-column: 1/-1;">Falha ao carregar o catálogo. Verifique sua conexão.</p>';
       }
-    ];
-
-    let todosOsProdutos = [];
-    let produtoAtivo = null;
-    let fotoAtivaIndex = 0;
-
-    // === INICIALIZAÇÃO DA PÁGINA ===
-    function inicializarSite() {
-      // Como o objetivo é demonstrar o design sem falhas de API local, 
-      // estou bypassando o Fetch do Github e injetando o catálogo Mock diretamente.
-      
-      // 1. Renderiza Categorias (Menus e Filtros)
-      const submenu = document.getElementById('submenu-categorias');
-      const botoesFiltros = document.getElementById('botoes-filtros');
-      const footerCat = document.getElementById('footer-categorias');
-
-      categoriasMock.forEach(cat => {
-        submenu.innerHTML += `<a href="#loja" onclick="filtrarCategoria('${cat.title}'); closeMenu()">${cat.title}</a>`;
-        botoesFiltros.innerHTML += `<button class="filter-btn" onclick="filtrarCategoria('${cat.title}')">${cat.title}</button>`;
-        footerCat.innerHTML += `<li><a href="#loja" onclick="filtrarCategoria('${cat.title}')">${cat.title}</a></li>`;
-      });
-
-      // 2. Renderiza Guitarras
-      todosOsProdutos = guitarrasMock;
-      renderizarProdutos(todosOsProdutos);
     }
 
     // === LÓGICA DE RENDERIZAÇÃO E FILTRO ===
     function renderizarProdutos(lista) {
       const grid = document.getElementById('grid-guitarras');
+      if(!grid) return;
       grid.innerHTML = '';
 
       if(lista.length === 0) {
@@ -549,19 +539,24 @@
       }
 
       lista.forEach((guitarra, idx) => {
-        const status = guitarra.vendido ? '<span class="badge-status vendido">Vendido</span>' : '<span class="badge-status disponivel">Disponível</span>';
+        const estaVendido = guitarra.vendido === true || guitarra.vendido === "true";
+        const status = estaVendido ? '<span class="badge-status vendido">Vendido</span>' : '<span class="badge-status disponivel">Disponível</span>';
         
         const card = document.createElement('div');
         card.className = 'card-instrumento';
+        
+        const imgSrc = guitarra.image ? guitarra.image : 'https://placehold.co/600x400/121212/d4af37?text=Sem+Foto';
+        const descText = guitarra.body ? guitarra.body.replace(/(<([^>]+)>)/gi, "").substring(0, 80) + '...' : 'Clique para ver as especificações.';
+
         card.innerHTML = `
           <div class="img-wrapper" onclick="abrirModal(${idx})">
-            <img src="${guitarra.image}" alt="${guitarra.title}">
+            <img src="${imgSrc}" alt="${guitarra.title || 'Instrumento'}">
             ${status}
           </div>
           <div class="card-info">
-            <span class="category-tag">${guitarra.categoria}</span>
-            <h3 onclick="abrirModal(${idx})">${guitarra.title}</h3>
-            <p>${guitarra.body.substring(0, 80)}...</p>
+            <span class="category-tag">${guitarra.categoria || 'Geral'}</span>
+            <h3 onclick="abrirModal(${idx})">${guitarra.title || 'Modelo Exclusivo'}</h3>
+            <p>${descText}</p>
             <a href="javascript:void(0)" onclick="abrirModal(${idx})" class="btn-action">Ver Especificações</a>
           </div>
         `;
@@ -591,37 +586,53 @@
       produtoAtivo = todosOsProdutos[index];
       fotoAtivaIndex = 0;
       
-      document.getElementById('modal-nome').innerText = produtoAtivo.title;
-      document.getElementById('modal-categoria').innerText = produtoAtivo.categoria;
-      document.getElementById('modal-imagem-principal').src = produtoAtivo.image;
+      document.getElementById('modal-nome').innerText = produtoAtivo.title || 'Modelo Exclusivo';
+      document.getElementById('modal-categoria').innerText = produtoAtivo.categoria || 'Geral';
+      document.getElementById('modal-imagem-principal').src = produtoAtivo.image || 'https://placehold.co/600x400/121212/d4af37?text=Sem+Foto';
       
       // Galeria Thumbs
       const thumbsContainer = document.getElementById('modal-thumbnails');
       thumbsContainer.innerHTML = '';
-      produtoAtivo.galeria.forEach((img, fIdx) => {
+      
+      if(produtoAtivo.galeria && produtoAtivo.galeria.length > 0) {
+        produtoAtivo.galeria.forEach((imgObj, fIdx) => {
+          const thumb = document.createElement('img');
+          thumb.src = imgObj.foto;
+          thumb.className = `thumb-img ${fIdx === 0 ? 'active' : ''}`;
+          thumb.onclick = () => alternarFoto(fIdx);
+          thumbsContainer.appendChild(thumb);
+        });
+      } else if (produtoAtivo.image) {
         const thumb = document.createElement('img');
-        thumb.src = img.foto;
-        thumb.className = `thumb-img ${fIdx === 0 ? 'active' : ''}`;
-        thumb.onclick = () => alternarFoto(fIdx);
+        thumb.src = produtoAtivo.image;
+        thumb.className = 'thumb-img active';
         thumbsContainer.appendChild(thumb);
-      });
+      }
 
-      // Tabela de Especificações (Trata o texto como linhas)
+      // Especificações (Rich Text ou Plain Text)
       const tabela = document.getElementById('modal-tabela-specs');
       tabela.innerHTML = '';
-      const linhasTexto = produtoAtivo.body.split('\n');
-      linhasTexto.forEach(linha => {
-        if (linha.includes(':')) {
-          const partes = linha.split(':');
-          tabela.innerHTML += `<tr><td class="label">${partes[0].trim()}</td><td class="val">${partes.slice(1).join(':').trim()}</td></tr>`;
-        } else if (linha.trim() !== '') {
-          tabela.innerHTML += `<tr><td colspan="2" class="val" style="padding-top:10px;">${linha}</td></tr>`;
+      
+      if(produtoAtivo.body) {
+        if(produtoAtivo.body.includes('<p>') || produtoAtivo.body.includes('<ul>')) {
+          tabela.innerHTML = `<tr><td colspan="2" class="val" style="padding-top:10px;">${produtoAtivo.body}</td></tr>`;
+        } else {
+          const linhasTexto = produtoAtivo.body.split('\n');
+          linhasTexto.forEach(linha => {
+            if (linha.includes(':')) {
+              const partes = linha.split(':');
+              tabela.innerHTML += `<tr><td class="label">${partes[0].trim()}</td><td class="val">${partes.slice(1).join(':').trim()}</td></tr>`;
+            } else if (linha.trim() !== '') {
+              tabela.innerHTML += `<tr><td colspan="2" class="val" style="padding-top:10px;">${linha}</td></tr>`;
+            }
+          });
         }
-      });
+      }
 
       // Link WhatsApp Dinâmico
-      const statusText = produtoAtivo.vendido ? 'encomendar uma réplica da' : 'consultar sobre a';
-      document.getElementById('modal-btn-wa').href = `https://wa.me/5511995317881?text=Olá Emerson, gostaria de ${statusText} guitarra ${encodeURIComponent(produtoAtivo.title)} que vi no site.`;
+      const statusText = (produtoAtivo.vendido === true || produtoAtivo.vendido === "true") ? 'encomendar uma réplica da' : 'consultar sobre a';
+      const wppLink = `https://wa.me/5511995317881?text=Olá Emerson, gostaria de ${statusText} guitarra ${encodeURIComponent(produtoAtivo.title || 'que vi no site')}.`;
+      document.getElementById('modal-btn-wa').href = wppLink;
 
       document.getElementById('modal-detalhes').style.display = 'flex';
     }
@@ -630,14 +641,16 @@
     
     function alternarFoto(index) {
       fotoAtivaIndex = index;
-      document.getElementById('modal-imagem-principal').src = produtoAtivo.galeria[index].foto;
+      if(produtoAtivo.galeria && produtoAtivo.galeria.length > 0) {
+        document.getElementById('modal-imagem-principal').src = produtoAtivo.galeria[index].foto;
+      }
       document.querySelectorAll('.thumb-img').forEach((th, tIdx) => {
         tIdx === index ? th.classList.add('active') : th.classList.remove('active');
       });
     }
 
     function mudarFoto(direcao) {
-      if(!produtoAtivo) return;
+      if(!produtoAtivo || !produtoAtivo.galeria || produtoAtivo.galeria.length === 0) return;
       let novoIndex = fotoAtivaIndex + direcao;
       if(novoIndex < 0) novoIndex = produtoAtivo.galeria.length - 1;
       if(novoIndex >= produtoAtivo.galeria.length) novoIndex = 0;
