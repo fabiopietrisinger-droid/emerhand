@@ -1,0 +1,685 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>EmerHand – Luthieria Custom Shop</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  
+  <style>
+    /* ==========================================================================
+       UX/UI DESIGN SYSTEM & ESTILIZAÇÃO PREMIUM
+       ========================================================================== */
+    :root {
+      --bg-primary: #0a0a0a;
+      --bg-secondary: #121212;
+      --bg-card: #1a1a1a;
+      --accent: #d4af37; /* Dourado */
+      --text-main: #e0e0e0;
+      --text-muted: #888888;
+      --border-color: #262626;
+      --status-sold: #cf6679;
+      --status-avail: #03dac6;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body { font-family: 'Helvetica Neue', Arial, sans-serif; background-color: var(--bg-primary); color: var(--text-main); line-height: 1.6; overflow-x: hidden; }
+    a { color: inherit; text-decoration: none; transition: all 0.3s ease; }
+    ul { list-style: none; }
+    .container { width: 100%; max-width: 1200px; margin: 0 auto; padding: 0 20px; }
+
+    /* NAVBAR & HAMBÚRGUER */
+    .header-main { background-color: rgba(10, 10, 10, 0.95); border-bottom: 1px solid var(--border-color); position: fixed; top: 0; width: 100%; z-index: 1000; padding: 15px 40px; display: flex; justify-content: space-between; align-items: center; }
+    
+    .logo img { height: 45px; width: auto; object-fit: contain; } /* Placeholder do Logo */
+    
+    .menu-toggle { display: none; font-size: 24px; color: #fff; cursor: pointer; }
+    
+    .nav-links { display: flex; align-items: center; gap: 30px; }
+    .nav-links a { font-size: 9pt; text-transform: uppercase; letter-spacing: 1px; color: var(--text-muted); font-weight: 500; }
+    .nav-links a:hover { color: var(--accent); }
+    
+    .nav-contact { background-color: var(--accent); color: #000 !important; padding: 10px 20px; border-radius: 4px; font-weight: bold; }
+    .nav-contact:hover { background-color: #fff !important; }
+
+    /* DROPDOWN */
+    .dropdown { position: relative; display: inline-block; }
+    .dropdown-content { display: none; position: absolute; background-color: var(--bg-secondary); min-width: 220px; box-shadow: 0px 8px 16px rgba(0,0,0,0.6); border: 1px solid var(--border-color); top: 100%; left: 0; z-index: 1050; border-radius: 4px; padding: 10px 0; }
+    .dropdown-content a { color: var(--text-muted); padding: 12px 20px; display: block; font-size: 8.5pt; text-transform: uppercase; border-bottom: 1px solid var(--border-color); }
+    .dropdown-content a:last-child { border-bottom: none; }
+    .dropdown-content a:hover { background-color: #1e1e1e; color: var(--accent); }
+    .dropdown:hover .dropdown-content { display: block; }
+
+    /* RESPONSIVO NAVBAR */
+    @media screen and (max-width: 992px) {
+      .menu-toggle { display: block; }
+      .nav-links { position: fixed; top: 75px; left: -100%; width: 100%; height: calc(100vh - 75px); background-color: var(--bg-secondary); flex-direction: column; align-items: center; justify-content: flex-start; padding-top: 40px; transition: 0.3s; z-index: 999; }
+      .nav-links.active { left: 0; }
+      .nav-links a { font-size: 14pt; margin-bottom: 25px; }
+      .dropdown:hover .dropdown-content { display: none; } /* Oculta hover no mobile */
+      .dropdown.active-mobile .dropdown-content { display: block; position: relative; box-shadow: none; border: none; width: 100%; text-align: center; }
+    }
+
+    /* HERO */
+    .hero-slider { height: 75vh; min-height: 550px; background-image: linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)), url('https://images.unsplash.com/photo-1550985616-10810253b84d?q=80&w=1920'); background-size: cover; background-position: center; display: flex; align-items: center; justify-content: center; text-align: center; padding-top: 80px; }
+    .hero-content h1 { font-size: 36pt; color: #fff; text-transform: uppercase; letter-spacing: 4px; font-weight: 700; }
+
+    /* SHOWROOM */
+    .catalog-section { padding: 100px 0; background-color: var(--bg-secondary); border-bottom: 1px solid var(--border-color); }
+    .section-title { font-size: 24pt; color: #fff; text-align: center; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 40px; }
+    .section-title::after { content: ''; display: block; width: 60px; height: 2px; background-color: var(--accent); margin: 15px auto 0 auto; }
+
+    /* BOXES CONCEITUAIS */
+    .split-info-card { display: flex; border-radius: 8px; overflow: hidden; margin-bottom: 60px; border: 1px solid var(--border-color); }
+    .split-info-card.card-grey { background-color: #555555; }
+    .split-info-card.card-teal { background-color: #0b6b68; }
+    .split-info-content { flex: 1.2; padding: 45px; display: flex; flex-direction: column; justify-content: center; }
+    .split-info-content h3 { font-size: 20pt; color: #fff; margin-bottom: 10px; }
+    .split-info-content h4 { font-size: 12pt; color: var(--accent); margin-bottom: 20px; font-weight: 500; }
+    .split-info-content p { font-size: 10.5pt; line-height: 1.7; color: #f5f5f5; }
+    .split-info-image { flex: 1; background-size: cover; background-position: center; min-height: 300px; }
+    
+    @media (max-width: 900px) {
+      .split-info-card { flex-direction: column; }
+      .split-info-content { padding: 30px 20px; }
+      .split-info-image { min-height: 250px; }
+    }
+
+    /* FILTROS E GRID */
+    .filter-wrapper { text-align: center; margin-bottom: 50px; }
+    .filter-btn { background: transparent; border: 1px solid var(--border-color); color: var(--text-muted); padding: 10px 22px; margin: 5px; cursor: pointer; border-radius: 20px; font-size: 8.5pt; text-transform: uppercase; font-weight: bold; transition: all 0.3s; }
+    .filter-btn:hover, .filter-btn.active { border-color: var(--accent); color: var(--accent); background-color: rgba(212, 175, 55, 0.05); }
+    .grid-instruments { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 30px; }
+    .card-instrumento { background-color: var(--bg-card); border: 1px solid var(--border-color); border-radius: 6px; overflow: hidden; display: flex; flex-direction: column; transition: transform 0.3s, border-color 0.3s; }
+    .card-instrumento:hover { transform: translateY(-5px); border-color: var(--accent); }
+    .img-wrapper { position: relative; width: 100%; height: 280px; background-color: #000; cursor: pointer; }
+    .img-wrapper img { width: 100%; height: 100%; object-fit: cover; }
+    .badge-status { position: absolute; top: 15px; right: 15px; padding: 6px 14px; font-size: 8pt; font-weight: bold; text-transform: uppercase; letter-spacing: 1px; border-radius: 4px; }
+    .badge-status.vendido { background-color: var(--status-sold); color: #fff; }
+    .badge-status.disponivel { background-color: var(--status-avail); color: #121212; }
+    .card-info { padding: 25px; display: flex; flex-direction: column; flex-grow: 1; }
+    .category-tag { font-size: 8pt; text-transform: uppercase; color: var(--accent); margin-bottom: 10px; }
+    .card-info h3 { font-size: 14pt; color: #fff; margin-bottom: 15px; cursor: pointer; }
+    .card-info p { font-size: 10pt; color: #b3b3b3; margin-bottom: 25px; height: 60px; overflow: hidden; }
+
+    /* MADEIRAS (ICONS) */
+    .woods-section { padding: 100px 0; background-color: var(--bg-primary); border-bottom: 1px solid var(--border-color); }
+    .woods-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 40px; margin-top: 50px; align-items: start; }
+    .wood-col { background-color: var(--bg-card); border: 1px solid var(--border-color); border-radius: 6px; padding: 40px 30px; text-align: center; }
+    .wood-icon { font-size: 30pt; color: var(--accent); margin-bottom: 20px; }
+    .wood-col h3 { font-size: 16pt; color: #fff; text-transform: uppercase; margin-bottom: 20px; border-bottom: 1px solid var(--border-color); padding-bottom: 15px; }
+    .wood-list-items { text-align: left; margin-bottom: 20px; }
+    .wood-list-items li { margin-bottom: 8px; font-size: 10.5pt; color: var(--text-main); position: relative; padding-left: 20px; }
+    .wood-list-items li::before { content: '▸'; color: var(--accent); position: absolute; left: 0; }
+    .wood-desc { font-size: 9.5pt; color: #aaaaaa; text-align: left; line-height: 1.6; }
+    .pre-prontos-box { margin-top: 50px; padding: 30px; background-color: rgba(212, 175, 55, 0.05); border: 1px solid var(--accent); border-radius: 6px; text-align: center; }
+    .pre-prontos-box h4 { font-size: 14pt; color: var(--accent); text-transform: uppercase; margin-bottom: 10px; }
+    .pre-prontos-box p { font-size: 10.5pt; color: #e0e0e0; max-width: 800px; margin: 0 auto; }
+
+    /* REGRAS ORÇAMENTO */
+    .rules-section { padding: 100px 0; background-color: var(--bg-secondary); }
+    .rules-container { display: grid; grid-template-columns: 1fr; gap: 30px; margin-bottom: 60px; max-width: 900px; margin-left: auto; margin-right: auto; }
+    .rule-block { background-color: var(--bg-primary); padding: 30px; border-left: 4px solid var(--accent); border-radius: 0 6px 6px 0; }
+    .rule-block h3 { font-size: 14pt; color: #fff; margin-bottom: 15px; text-transform: uppercase; }
+    .rule-block p { font-size: 10.5pt; color: #b3b3b3; }
+
+    /* VIDEOS YOUTUBE */
+    .video-section { padding: 80px 0; background-color: #1a1a1a; border-top: 1px solid var(--border-color); border-bottom: 1px solid var(--border-color); }
+    .video-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(400px, 1fr)); gap: 30px; margin-top: 40px; }
+    .video-wrapper { position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden; border-radius: 8px; border: 1px solid var(--border-color); }
+    .video-wrapper iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; }
+    @media(max-width: 600px) { .video-grid { grid-template-columns: 1fr; } }
+
+    /* SOBRE */
+    .about-section { padding: 100px 0; background-color: var(--bg-primary); }
+    .about-grid { display: flex; gap: 50px; align-items: center; }
+    .about-img { flex: 1; max-width: 500px; }
+    .about-img img { width: 100%; border-radius: 6px; border: 1px solid var(--border-color); filter: grayscale(15%); }
+    .about-text { flex: 1.2; }
+    .about-text h3 { font-size: 20pt; color: #fff; text-transform: uppercase; margin-bottom: 25px; }
+    .about-text p { font-size: 11pt; color: #b3b3b3; margin-bottom: 20px; }
+    @media(max-width: 900px) { .about-grid { flex-direction: column; } }
+
+    /* MODAL DE DETALHES */
+    .modal { display: none; position: fixed; z-index: 2000; left: 0; top: 0; width: 100%; height: 100%; overflow: auto; background-color: rgba(0, 0, 0, 0.95); align-items: center; justify-content: center; }
+    .modal-content { background-color: var(--bg-secondary); border: 1px solid var(--border-color); border-radius: 8px; width: 90%; max-width: 1100px; display: flex; flex-direction: row; overflow: hidden; position: relative; box-shadow: 0 10px 40px rgba(0,0,0,0.8); }
+    .close-modal { position: absolute; top: 20px; right: 25px; color: var(--text-muted); font-size: 30px; font-weight: bold; cursor: pointer; z-index: 10; transition: color 0.2s; }
+    .close-modal:hover { color: var(--accent); }
+    .modal-gallery-pane { width: 55%; position: relative; background-color: #000; display: flex; flex-direction: column; }
+    .modal-slider-main { width: 100%; height: 480px; display: flex; align-items: center; justify-content: center; overflow: hidden; }
+    .modal-slider-main img { width: 100%; height: 100%; object-fit: contain; }
+    .slider-nav { position: absolute; top: 50%; transform: translateY(-50%); background-color: rgba(0,0,0,0.5); border: 1px solid var(--border-color); color: #fff; font-size: 20px; width: 45px; height: 45px; border-radius: 50%; cursor: pointer; display: flex; align-items: center; justify-content: center; }
+    .slider-nav:hover { background-color: var(--accent); color: #000; }
+    .slider-nav.prev { left: 15px; }
+    .slider-nav.next { right: 15px; }
+    .modal-slider-thumbnails { display: flex; gap: 10px; padding: 15px; background-color: var(--bg-primary); overflow-x: auto; }
+    .thumb-img { width: 60px; height: 60px; object-fit: cover; border: 1.5px solid var(--border-color); border-radius: 3px; cursor: pointer; opacity: 0.6; transition: all 0.2s; }
+    .thumb-img.active, .thumb-img:hover { opacity: 1; border-color: var(--accent); }
+    .modal-specs-pane { width: 45%; padding: 40px; overflow-y: auto; max-height: 600px; display: flex; flex-direction: column; }
+    .modal-specs-pane h2 { font-size: 18pt; color: #fff; text-transform: uppercase; margin-bottom: 10px; }
+    .specs-table { width: 100%; margin-bottom: 30px; border-collapse: collapse; }
+    .specs-table td { padding: 12px 0; border-bottom: 1px solid var(--border-color); font-size: 9.5pt; }
+    .specs-table td.label { color: var(--text-muted); width: 35%; font-weight: bold; text-transform: uppercase; }
+    .specs-table td.val { color: #fff; }
+    .modal-btn { display: block; width: 100%; text-align: center; background-color: var(--accent); color: #000; padding: 15px; border-radius: 4px; font-weight: bold; text-transform: uppercase; margin-top: auto; }
+    @media(max-width: 900px) { .modal-content { flex-direction: column; } .modal-gallery-pane, .modal-specs-pane { width: 100%; } .modal-specs-pane { max-height: none; } }
+
+    /* FOOTER */
+    .footer-main { background-color: #050505; padding: 60px 0 30px 0; border-top: 1px solid var(--border-color); }
+    .footer-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 50px; margin-bottom: 40px; }
+    .footer-col h4 { color: #fff; text-transform: uppercase; font-size: 12pt; letter-spacing: 1px; margin-bottom: 25px; }
+    .footer-col ul li { margin-bottom: 15px; }
+    .footer-col ul li a { font-size: 10pt; color: var(--text-muted); display: flex; align-items: center; gap: 10px; }
+    .footer-col ul li a:hover { color: var(--accent); }
+    .btn-footer i { font-size: 14pt; }
+    
+    .footer-bottom { border-top: 1px solid var(--border-color); padding-top: 30px; text-align: center; }
+    .social-links { margin-bottom: 20px; }
+    .social-links a { display: inline-block; margin: 0 10px; font-size: 20pt; color: var(--text-muted); transition: color 0.3s; }
+    .social-links a:hover { color: var(--accent); }
+    .footer-bottom p { font-size: 9pt; color: #555; margin-bottom: 5px; }
+    .dev-credits a { color: var(--accent); font-weight: bold; }
+    @media(max-width: 768px) { .footer-grid { grid-template-columns: 1fr; } }
+  </style>
+</head>
+<body>
+
+  <header class="header-main">
+    <div class="logo">
+      <img src="imagens/logo.png" alt="EmerHand">
+    </div>
+    
+    <div class="menu-toggle" onclick="toggleMenu()">
+      <i class="fa-solid fa-bars"></i>
+    </div>
+
+    <nav class="nav-links" id="nav-menu">
+      <a href="#hero" onclick="closeMenu()">Home</a>
+      <div class="dropdown" id="drop-modelos" onclick="toggleMobileDropdown()">
+        <a href="javascript:void(0)" class="dropbtn">Modelos <i class="fa-solid fa-caret-down"></i></a>
+        <div id="submenu-categorias" class="dropdown-content">
+          </div>
+      </div>
+      <a href="#madeiras" onclick="closeMenu()">Madeiras</a>
+      <a href="#regras" onclick="closeMenu()">Orçamento</a>
+      <a href="#sobre" onclick="closeMenu()">O Luthier</a>
+      <a href="https://wa.me/5511995317881" target="_blank" class="nav-contact">WhatsApp</a>
+    </nav>
+  </header>
+
+  <section id="hero" class="hero-slider">
+    <div class="hero-content">
+      <h1 id="hero-titulo">Luthieria Custom Shop</h1>
+    </div>
+  </section>
+
+  <section id="loja" class="catalog-section">
+    <div class="container">
+      <h2 class="section-title">Showroom Custom Shop</h2>
+      
+      <div class="split-info-card card-grey">
+        <div class="split-info-content">
+          <h3>Guitarras a venda expostas no site</h3>
+          <h4>Todas as guitarras são Únicas.</h4>
+          <p>
+            São construídas conforme meu acervo de madeiras e itens que consigo com os fornecedores de madeiras e peças em diferentes épocas. Uso combinações que experimento em minha oficina e finalizo os instrumentos conforme condições de tempo e processos que aproveito enquanto construo as guitarras encomendadas pelos clientes. Por isso uma guitarras exposta 'à pronta entrega' no site diz respeito a única peça em exposição, e não uma quantidade de instrumentos com essas características. A título de apreciação e para ajudar em suas escolhas, as guitarras vendidas permanecem no site em exposição com o selo de “VENDIDO”
+          </p>
+        </div>
+        <div class="split-info-image" style="background-image: url('imagens/expostas.jpg');"></div>
+      </div>
+
+      <div class="filter-wrapper">
+        <button class="filter-btn active" onclick="filtrarCategoria('todas')">Todos os Instrumentos</button>
+        <div id="botoes-filtros" style="display: inline-block;">
+          </div>
+      </div>
+
+      <div id="grid-guitarras" class="grid-instruments">
+        <p class="loading">Carregando showroom exclusivo...</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="madeiras" class="woods-section">
+    <div class="container">
+      <h2 class="section-title">Acervo de Madeiras</h2>
+      
+      <div class="woods-grid">
+        <div class="wood-col">
+          <i class="fa-solid fa-tree wood-icon"></i>
+          <h3>Corpo das guitarras</h3>
+          <ul class="wood-list-items">
+            <li>Mogno</li>
+            <li>Cedro Rosa</li>
+            <li>Cerejeira</li>
+            <li>Marupá</li>
+            <li>Freijo</li>
+          </ul>
+          <p class="wood-desc">
+            É possível também a composição de misturas de madeiras e colocação de longarinas e tone blocks como você pode observar em algumas guitarras expostas no site. Costumo acrescentar nessas composições:<br><br>
+            Marfim, Jatobá, Ipê, Imbuia, Roxinho, Tauarí e outras.
+          </p>
+        </div>
+
+        <div class="wood-col">
+          <i class="fa-solid fa-guitar wood-icon"></i>
+          <h3>Braço das guitarras</h3>
+          <p class="wood-desc" style="margin-bottom: 15px;">Marfim laminado em 3 peças com frisos em folhas pretas de carvalho.</p>
+          <ul class="wood-list-items">
+            <li>Marfim</li>
+            <li>Mogno</li>
+            <li>Cedro Arana</li>
+            <li>Tauarí Pardo</li>
+            <li>Tauarí Branco</li>
+            <li>Roxinho e outras</li>
+          </ul>
+          <p class="wood-desc">
+            Todos os braços podem ser confeccionados em ‘peças’, ‘longarinas’ e ‘Lãminas’ combinando as madeiras.<br><br>
+            <strong>Exemplo:</strong> Braço em 3 peças de marfim com 2 longarinas em mogno com laminas de Marfim e imbuia para destacar as juntas.<br>
+            <strong>Exemplo:</strong> Braço em 3 peças de mogno com 2 longarinas em Roxinho com laminas em marfim para destaque das longarinas.
+          </p>
+        </div>
+
+        <div class="wood-col">
+          <i class="fa-solid fa-ruler wood-icon"></i>
+          <h3>Escalas</h3>
+          <ul class="wood-list-items">
+            <li>Marfim</li>
+            <li>Vinhático</li>
+            <li>Jacarandá (Mineiro, Paulista e Bahiano)</li>
+            <li>Roxinho</li>
+            <li>Muiracatiara e outras</li>
+          </ul>
+          <p class="wood-desc" style="margin-top: 15px;">
+            <strong>As opções para a marcação da escala são:</strong><br><br>
+            DOT ( Bolinhas ) de 2,4 ou 6 mm em preto ou branco, no centro, na extremidade dos bordões ou meio a meio (extremidade dos bordões até a casa 12 extremidade das Primas até a casa 24)
+          </p>
+        </div>
+      </div>
+      
+      <div class="pre-prontos-box">
+        <h4>Pré Prontos</h4>
+        <p>Em caso de dúvidas sempre possuo modelos de corpo e braço pré prontos para consulta visual via whatsApp, o que também agiliza a construção de sua headless quanto aos prazos de entrega.</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="regras" class="rules-section">
+    <div class="container">
+      <h2 class="section-title">Regras para seu orçamento base</h2>
+      
+      <div class="rules-container">
+        <div class="rule-block">
+          <h3>Uso de madeiras nacionais</h3>
+          <p>O uso de madeiras nacionais permite que a faixa de preço fique dentro do esperado por evitar as variações do Dolar($) e das taxas de importação que constantemente sofrem alterações. São madeiras de alta qualidade que em nada perdem para as importadas sendo até superior em muitos aspectos. Existe uma grande variedade de madeiras exóticas com muita beleza. Posso ajudar e aconselhar em suas escolhas para que seu instrumento fique dentro do seu gosto e objetivo.</p>
+        </div>
+
+        <div class="rule-block">
+          <h3>Uso da ponte “Nova Headless”</h3>
+          <p>Feita no Brasil pelo construtor André Passini e desenvolvida em parceria com a EmerHand especialmente para as Headless. Ponte em alumínio e latão com alta qualidade já testada e aprovada por muitos luthiers nacionais e internacionais. Você pode escolher entre os acabamentos Preto, Cromado e Setin.</p>
+        </div>
+
+        <div class="rule-block">
+          <h3>Uso de Captadores Malagoli</h3>
+          <p>Existe uma grande variedade onde você pode consultar as características no próprio site. O modelo mais usado na Emerhand é a combinação clássica de Custom 84 e 59 em Alnico 5, o modelo DIRT em imã de barra Cerâmico e o modelo Napalm para os high gain mais extemos. Mas você pode escolher ainda outros modelos. Caso queira outro modelo ou acabamento, basta completar a diferença de preço em seu orçamento. Caso queira outro captador você pode escolher e fornecer o modelo.</p>
+        </div>
+
+        <div class="rule-block">
+          <h3>Uso de trastes em Inox da marca DHP</h3>
+          <p>Nos tamanhos Jumbo perfil Baixo ( 24HS), Medio (27HS), Alto(29HS) e Super alto(30HS) São trastes de excelente qualidades.<br><br><strong>Uso da elétrica ALPHA</strong></p>
+        </div>
+
+        <div class="rule-block">
+          <h3>Acabamento e Modelos</h3>
+          <p><strong>Acabamento:</strong> Natural Fosco, Acetinado ou semi-brilho nos materiais Cera, Tung Oil ou Verniz Poliester. Qualquer outro tipo de acabamento, verniz ou pintura solida pode ser orçado com o Pintor especialista em instrumentos.<br><br>
+          <strong>Os modelos disponíveis são os demonstrados aqui no site:</strong> EmerHand Headless Exotic e EmerHand Headless Modern podendo sem em padão Standard 25´5” polegadas ( Padrão Stratocaster ) ou MULTISCALE 25`5”x 24`75” As escolhas contam ainda com opções de Hallow Body, Solidas, Chamber e opções diversas de arredondamento dos cantos dianteiros e traseiros assim como diferentes chanfros e alívios. Tudo à combinar.</p>
+        </div>
+      </div>
+
+      <div class="split-info-card card-teal">
+        <div class="split-info-content">
+          <h3>Dúvidas?</h3>
+          <p>
+            As informações sobre orçamentos, materiais e acabamentos aqui contidas visam uma filtragem para um melhor entendimento das opções e uma ideia base para um orçamento. Como se trata de uma guitarra personalizada e com muitas variáveis e detalhes é esperado que dúvidas ainda fiquem e uma consulta mais “Pessoal” se faça necessária. Por isso sinta-se à vontade para um contato via whatsApp para esclarecimentos. Deixe seu nome e suas dúvidas sobre a construção e orçamento final de sua Headless Custom, assim como prazos e parcelamentos e assim que possível responderei.<br><br>Obrigado ! Emerson Santos Luthier EmerHand Custom Guitars
+          </p>
+        </div>
+        <div class="split-info-image" style="background-image: url('imagens/duvidas.jpg');"></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="video-section">
+    <div class="container">
+      <h2 class="section-title">EmerHand em Ação</h2>
+      <div class="video-grid">
+        <div class="video-wrapper">
+          <iframe width="100%" height="315" src="https://www.youtube.com/embed/BpN0oAKgY40" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+        </div>
+        <div class="video-wrapper">
+          <iframe width="100%" height="315" src="https://www.youtube.com/embed/yc5itrrKRWU" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="sobre" class="about-section">
+    <div class="container">
+      <div class="about-grid" id="conteudo-sobre">
+        <div class="about-img">
+          <img src="https://images.unsplash.com/photo-1525201548942-d8c8709e4a88?q=80&w=800" alt="Emerson Santos">
+        </div>
+        <div class="about-text">
+          <h3>Emerson Santos (Luthier)</h3>
+          <p>Com anos de dedicação à arte da luthieria, transformo madeiras exóticas e nacionais em ferramentas de expressão artística únicas. A EmerHand foca na construção de instrumentos de altíssima performance, unindo conceitos ergonômicos e acabamento primoroso.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div id="modal-detalhes" class="modal">
+    <div class="modal-content">
+      <span class="close-modal" onclick="fecharModal()">×</span>
+      
+      <div class="modal-gallery-pane">
+        <div class="modal-slider-main">
+          <img id="modal-imagem-principal" src="" alt="Imagem Principal">
+          <button class="slider-nav prev" onclick="mudarFoto(-1)">‹</button>
+          <button class="slider-nav next" onclick="mudarFoto(1)">›</button>
+        </div>
+        <div id="modal-thumbnails" class="modal-slider-thumbnails"></div>
+      </div>
+
+      <div class="modal-specs-pane">
+        <span class="category-tag" id="modal-categoria">Categoria</span>
+        <h2 id="modal-nome">Nome do Instrumento</h2>
+        
+        <table class="specs-table">
+          <tbody id="modal-tabela-specs"></tbody>
+        </table>
+        
+        <a id="modal-btn-wa" href="#" target="_blank" class="modal-btn">Consultar Luthier no WhatsApp</a>
+      </div>
+    </div>
+  </div>
+
+  <footer class="footer-main">
+    <div class="container footer-grid">
+      
+      <div class="footer-col">
+        <h4>Modelos</h4>
+        <ul id="footer-categorias">
+          </ul>
+      </div>
+
+      <div class="footer-col">
+        <h4>Contato</h4>
+        <ul class="contact-list">
+          <li><a href="https://wa.me/5511995317881" target="_blank" class="btn-footer"><i class="fa-brands fa-whatsapp"></i> (11) 99531-7881</a></li>
+          <li><a href="https://maps.google.com/?q=Av.+Bunduki,+357+SBC+SP" target="_blank" class="btn-footer"><i class="fa-solid fa-location-dot"></i> Av. Bunduki, 357 - SBC / SP</a></li>
+        </ul>
+      </div>
+
+    </div>
+    
+    <div class="footer-bottom">
+      <div class="social-links">
+        <a href="https://www.facebook.com/emerhandcustomguitars.emersonsantos" target="_blank"><i class="fa-brands fa-facebook"></i></a>
+        <a href="https://www.instagram.com/emerhand_luthier/" target="_blank"><i class="fa-brands fa-instagram"></i></a>
+      </div>
+      <p>© 2026 EmerHand Custom Guitars. Todos os direitos reservados. Emerson Santos Luthier.</p>
+      <p class="dev-credits">Desenvolvido por <a href="https://singwebdesign.com.br/" target="_blank">Sing Web Design</a></p>
+    </div>
+  </footer>
+
+  <script>
+    // === DADOS DO SEU REPOSITÓRIO GITHUB ===
+    const GITHUB_USER = 'fabiopietrisinger-droid';
+    const GITHUB_REPO = 'emerhand';
+
+    let todosOsProdutos = [];
+    let produtoAtivo = null;
+    let fotoAtivaIndex = 0;
+
+    // === LÓGICA DE MENU MOBILE ===
+    function toggleMenu() { document.getElementById("nav-menu").classList.toggle("active"); }
+    function closeMenu() { document.getElementById("nav-menu").classList.remove("active"); }
+    function toggleMobileDropdown() { if(window.innerWidth <= 992) { document.getElementById("drop-modelos").classList.toggle("active-mobile"); } }
+
+    function urlSemCache(urlBase) {
+      if (!urlBase) return '';
+      const separador = urlBase.includes('?') ? '&' : '?';
+      return urlBase + separador + 't=' + new Date().getTime();
+    }
+
+    // === INICIALIZAÇÃO DA PÁGINA ===
+    async function inicializarSite() {
+      try {
+        // 1. Renderiza Categorias (Lendo o JSON dentro dos .md)
+        const resCat = await fetch(urlSemCache(`https://api.github.com/repos/${GITHUB_USER}/${GITHUB_REPO}/contents/content/categorias`));
+        if(resCat.ok) {
+          const arquivosCat = await resCat.json();
+          const submenu = document.getElementById('submenu-categorias');
+          const botoesFiltros = document.getElementById('botoes-filtros');
+          const footerCat = document.getElementById('footer-categorias');
+
+          for (const arquivo of arquivosCat) {
+            // Aceita arquivos .md ou .json
+            if ((arquivo.name.endsWith('.json') || arquivo.name.endsWith('.md')) && arquivo.download_url) {
+              try {
+                const resItem = await fetch(urlSemCache(arquivo.download_url));
+                const txtCat = await resItem.text();
+                // Limpa sujeira invisível do CMS e força a leitura como objeto JSON
+                const cleanTxt = txtCat.replace(/^[\u200B\u200C\u200D\u200E\u200F\uFEFF]/, "").trim();
+                const cat = JSON.parse(cleanTxt);
+
+                if(submenu && cat.title) submenu.innerHTML += `<a href="#loja" onclick="filtrarCategoria('${cat.title}'); closeMenu()">${cat.title}</a>`;
+                if(botoesFiltros && cat.title) botoesFiltros.innerHTML += `<button class="filter-btn" onclick="filtrarCategoria('${cat.title}')">${cat.title}</button>`;
+                if(footerCat && cat.title) footerCat.innerHTML += `<li><a href="#loja" onclick="filtrarCategoria('${cat.title}')">${cat.title}</a></li>`;
+              } catch (e) {
+                console.error("Erro na categoria", arquivo.name, e);
+              }
+            }
+          }
+        }
+
+        // 2. Renderiza Guitarras (Lendo o JSON puro dentro dos .md gerados pelo CMS)
+        const resLista = await fetch(urlSemCache(`https://api.github.com/repos/${GITHUB_USER}/${GITHUB_REPO}/contents/content/guitarras`));
+        if(resLista.ok) {
+          const arquivos = await resLista.json();
+          const grid = document.getElementById('grid-guitarras');
+          grid.innerHTML = ''; 
+          
+          for (const arquivo of arquivos) {
+            if ((arquivo.name.endsWith('.json') || arquivo.name.endsWith('.md')) && arquivo.download_url) {
+              try {
+                const resItem = await fetch(urlSemCache(arquivo.download_url));
+                const txtGuitarra = await resItem.text();
+                
+                // Limpeza por segurança e extração do JSON
+                const cleanTxtG = txtGuitarra.replace(/^[\u200B\u200C\u200D\u200E\u200F\uFEFF]/, "").trim();
+                const guitarra = JSON.parse(cleanTxtG);
+
+                if (guitarra && guitarra.title) {
+                  todosOsProdutos.push(guitarra);
+                }
+              } catch (e) {
+                console.error("Erro na guitarra", arquivo.name, e);
+              }
+            }
+          }
+          renderizarProdutos(todosOsProdutos);
+        } else {
+          document.getElementById('grid-guitarras').innerHTML = '<p class="loading" style="grid-column: 1/-1;">Nenhuma guitarra encontrada. Certifique-se de que o repositório é Público e que há itens cadastrados.</p>';
+        }
+
+        // 3. Renderiza Institucional (HOME)
+        const resHome = await fetch(urlSemCache(`https://api.github.com/repos/${GITHUB_USER}/${GITHUB_REPO}/contents/content/home.json`));
+        if(resHome.ok) {
+          const dataHomeRaw = await resHome.json();
+          const decodedContent = decodeURIComponent(escape(atob(dataHomeRaw.content)));
+          const homeData = JSON.parse(decodedContent);
+          
+          if(homeData.banners && homeData.banners.length > 0) {
+             const hero = document.getElementById('hero');
+             if (hero) hero.style.backgroundImage = `linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)), url('${homeData.banners[0].imagem}')`;
+             
+             const heroTitulo = document.getElementById('hero-titulo');
+             if(heroTitulo && homeData.banners[0].titulo) heroTitulo.innerText = homeData.banners[0].titulo;
+          }
+
+          if(homeData.sobre) {
+             const conteudoSobre = document.getElementById('conteudo-sobre');
+             if (conteudoSobre) {
+               conteudoSobre.innerHTML = `
+                  <div class="about-img">
+                    <img src="${homeData.sobre.foto_sobre}" alt="Luthieria">
+                  </div>
+                  <div class="about-text">
+                    <h3>${homeData.sobre.titulo_sobre || 'Emerson Santos (Luthier)'}</h3>
+                    <div style="font-size: 11pt; color: #b3b3b3; line-height: 1.6;">${homeData.sobre.texto_sobre || ''}</div>
+                  </div>
+               `;
+             }
+          }
+        }
+
+      } catch (error) {
+        console.error("Erro ao conectar com GitHub:", error);
+      }
+    }
+
+    // === LÓGICA DE RENDERIZAÇÃO E FILTRO ===
+    function renderizarProdutos(lista) {
+      const grid = document.getElementById('grid-guitarras');
+      if(!grid) return;
+      grid.innerHTML = '';
+
+      if(lista.length === 0) {
+        grid.innerHTML = '<p class="loading" style="grid-column: 1/-1;">Nenhum instrumento listado nesta categoria.</p>';
+        return;
+      }
+
+      lista.forEach((guitarra, idx) => {
+        const estaVendido = guitarra.vendido === true || guitarra.vendido === "true";
+        const status = estaVendido ? '<span class="badge-status vendido">Vendido</span>' : '<span class="badge-status disponivel">Disponível</span>';
+        
+        const imgSrc = guitarra.image ? guitarra.image : 'https://placehold.co/600x400/121212/d4af37?text=Sem+Foto';
+        const descText = guitarra.body ? guitarra.body.replace(/(<([^>]+)>)/gi, "").substring(0, 80) + '...' : 'Clique para ver as especificações.';
+
+        const card = document.createElement('div');
+        card.className = 'card-instrumento';
+        card.innerHTML = `
+          <div class="img-wrapper" onclick="abrirModal(${idx})">
+            <img src="${imgSrc}" alt="${guitarra.title || 'Instrumento'}">
+            ${status}
+          </div>
+          <div class="card-info">
+            <span class="category-tag">${guitarra.categoria || 'Geral'}</span>
+            <h3 onclick="abrirModal(${idx})">${guitarra.title || 'Modelo Exclusivo'}</h3>
+            <p>${descText}</p>
+            <a href="javascript:void(0)" onclick="abrirModal(${idx})" class="btn-action">Ver Especificações</a>
+          </div>
+        `;
+        grid.appendChild(card);
+      });
+    }
+
+    function filtrarCategoria(categoria) {
+      const botoes = document.querySelectorAll('.filter-btn');
+      botoes.forEach(btn => {
+        if(btn.innerText.toLowerCase() === categoria.toLowerCase() || (categoria === 'todas' && btn.innerText.includes('Todos'))) {
+          btn.classList.add('active');
+        } else {
+          btn.classList.remove('active');
+        }
+      });
+
+      if(categoria === 'todas') {
+        renderizarProdutos(todosOsProdutos);
+      } else {
+        renderizarProdutos(todosOsProdutos.filter(p => p.categoria === categoria));
+      }
+    }
+
+    // === LÓGICA DO MODAL (GALERIA E SPECS) ===
+    function abrirModal(index) {
+      produtoAtivo = todosOsProdutos[index];
+      fotoAtivaIndex = 0;
+      
+      document.getElementById('modal-nome').innerText = produtoAtivo.title || 'Modelo Exclusivo';
+      document.getElementById('modal-categoria').innerText = produtoAtivo.categoria || 'Geral';
+      document.getElementById('modal-imagem-principal').src = produtoAtivo.image || 'https://placehold.co/600x400/121212/d4af37?text=Sem+Foto';
+      
+      const thumbsContainer = document.getElementById('modal-thumbnails');
+      thumbsContainer.innerHTML = '';
+      
+      if(produtoAtivo.galeria && produtoAtivo.galeria.length > 0) {
+        produtoAtivo.galeria.forEach((imgObj, fIdx) => {
+          const thumb = document.createElement('img');
+          const urlImg = typeof imgObj === 'string' ? imgObj : imgObj.foto; 
+          thumb.src = urlImg;
+          thumb.className = `thumb-img ${fIdx === 0 ? 'active' : ''}`;
+          thumb.onclick = () => alternarFoto(fIdx);
+          thumbsContainer.appendChild(thumb);
+        });
+      } else if (produtoAtivo.image) {
+        const thumb = document.createElement('img');
+        thumb.src = produtoAtivo.image;
+        thumb.className = 'thumb-img active';
+        thumbsContainer.appendChild(thumb);
+      }
+
+      const tabela = document.getElementById('modal-tabela-specs');
+      tabela.innerHTML = '';
+      
+      if(produtoAtivo.body) {
+        if(produtoAtivo.body.includes('<p>') || produtoAtivo.body.includes('<ul>')) {
+          tabela.innerHTML = `<tr><td colspan="2" class="val" style="padding-top:10px;">${produtoAtivo.body}</td></tr>`;
+        } else {
+          const linhasTexto = produtoAtivo.body.split('\n');
+          linhasTexto.forEach(linha => {
+            if (linha.includes(':')) {
+              const partes = linha.split(':');
+              tabela.innerHTML += `<tr><td class="label">${partes[0].trim()}</td><td class="val">${partes.slice(1).join(':').trim()}</td></tr>`;
+            } else if (linha.trim() !== '') {
+              tabela.innerHTML += `<tr><td colspan="2" class="val" style="padding-top:10px;">${linha}</td></tr>`;
+            }
+          });
+        }
+      }
+
+      const statusText = (produtoAtivo.vendido === true || produtoAtivo.vendido === "true") ? 'encomendar uma réplica da' : 'consultar sobre a';
+      const wppLink = `https://wa.me/5511995317881?text=Olá Emerson, gostaria de ${statusText} guitarra ${encodeURIComponent(produtoAtivo.title || 'que vi no site')}.`;
+      document.getElementById('modal-btn-wa').href = wppLink;
+
+      document.getElementById('modal-detalhes').style.display = 'flex';
+    }
+
+    function fecharModal() { document.getElementById('modal-detalhes').style.display = 'none'; }
+    
+    function alternarFoto(index) {
+      fotoAtivaIndex = index;
+      if(produtoAtivo.galeria && produtoAtivo.galeria.length > 0) {
+        const urlImg = typeof produtoAtivo.galeria[index] === 'string' ? produtoAtivo.galeria[index] : produtoAtivo.galeria[index].foto;
+        document.getElementById('modal-imagem-principal').src = urlImg;
+      }
+      document.querySelectorAll('.thumb-img').forEach((th, tIdx) => {
+        tIdx === index ? th.classList.add('active') : th.classList.remove('active');
+      });
+    }
+
+    function mudarFoto(direcao) {
+      if(!produtoAtivo || !produtoAtivo.galeria || produtoAtivo.galeria.length === 0) return;
+      let novoIndex = fotoAtivaIndex + direcao;
+      if(novoIndex < 0) novoIndex = produtoAtivo.galeria.length - 1;
+      if(novoIndex >= produtoAtivo.galeria.length) novoIndex = 0;
+      alternarFoto(novoIndex);
+    }
+
+    window.onclick = function(e) { if(e.target == document.getElementById('modal-detalhes')) fecharModal(); }
+
+    document.addEventListener('DOMContentLoaded', inicializarSite);
+  </script>
+</body>
+</html>
