@@ -105,6 +105,18 @@
     .card-info h3 { font-size: 14pt; color: #fff; margin-bottom: 15px; cursor: pointer; }
     .card-info p { font-size: 10pt; color: #b3b3b3; margin-bottom: 25px; height: 60px; overflow: hidden; }
 
+    /* GRID RESPONSIVO: 2 COLUNAS NO MOBILE */
+    @media screen and (max-width: 600px) {
+      .grid-instruments { grid-template-columns: repeat(2, 1fr); gap: 15px; }
+      .img-wrapper { height: 160px; }
+      .card-info { padding: 15px 12px; }
+      .card-info h3 { font-size: 11pt; margin-bottom: 10px; }
+      .card-info p { font-size: 8.5pt; height: 50px; margin-bottom: 15px; }
+      .badge-status { padding: 4px 8px; font-size: 6.5pt; top: 10px; right: 10px; }
+      .category-tag { font-size: 7pt; margin-bottom: 6px; }
+      .card-info a { font-size: 8.5pt; }
+    }
+
     /* MADEIRAS (ICONS) */
     .woods-section { padding: 100px 0; background-color: var(--bg-primary); border-bottom: 1px solid var(--border-color); }
     .woods-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 40px; margin-top: 50px; align-items: start; }
@@ -148,7 +160,7 @@
     .wpp-float:hover { transform: scale(1.1); color: #fff; background-color: #20b858; }
     @media(max-width: 768px) { .wpp-float { bottom: 20px; right: 20px; width: 50px; height: 50px; font-size: 26px; } }
 
-    /* MODAL DE DETALHES (RESPONSIVO E SEM BARRAS OCULTAS) */
+    /* MODAL DE DETALHES (RESPONSIVO) */
     .modal { display: none; position: fixed; z-index: 2000; left: 0; top: 0; width: 100%; height: 100%; overflow-y: auto; background-color: rgba(0, 0, 0, 0.95); padding: 50px 15px; align-items: flex-start; justify-content: center; }
     .modal-content { margin: auto; background-color: var(--bg-secondary); border: 1px solid var(--border-color); border-radius: 8px; width: 100%; max-width: 1100px; display: flex; flex-direction: row; position: relative; box-shadow: 0 10px 40px rgba(0,0,0,0.8); height: auto; }
     
@@ -171,7 +183,6 @@
     .modal-specs-pane { width: 45%; padding: 40px; display: flex; flex-direction: column; height: auto; }
     .modal-specs-pane h2 { font-size: 18pt; color: #fff; text-transform: uppercase; margin-bottom: 10px; padding-right: 30px; }
     
-    /* Proteção contra esticamento por links longos na tabela */
     .specs-table { width: 100%; margin-bottom: 30px; border-collapse: collapse; table-layout: fixed; }
     .specs-table td { padding: 12px 10px 12px 0; border-bottom: 1px solid var(--border-color); font-size: 9.5pt; word-wrap: break-word; overflow-wrap: break-word; }
     .specs-table td.label { color: var(--text-muted); width: 35%; font-weight: bold; text-transform: uppercase; }
@@ -703,15 +714,13 @@
       const wppLink = `https://wa.me/5511995317881?text=Olá Emerson, gostaria de ${statusText} guitarra ${encodeURIComponent(produtoAtivo.title || 'que vi no site')}.`;
       document.getElementById('modal-btn-wa').href = wppLink;
 
-      // Alterado para flex para alinhar o modal no topo e permitir rolagem natural
       document.getElementById('modal-detalhes').style.display = 'flex';
-      // Travar rolagem do fundo (opcional, mas boa prática)
-      document.body.style.overflow = 'hidden';
+      document.body.style.overflow = 'hidden'; // Trava a rolagem da página por trás do modal
     }
 
     function fecharModal() { 
       document.getElementById('modal-detalhes').style.display = 'none'; 
-      document.body.style.overflow = 'auto'; // Restaurar rolagem
+      document.body.style.overflow = 'auto'; 
     }
     
     function alternarFoto(index) {
@@ -733,7 +742,6 @@
       alternarFoto(novoIndex);
     }
 
-    // Fechar ao clicar fora, cuidando para não fechar se clicar no conteúdo
     window.onclick = function(e) { 
       const modal = document.getElementById('modal-detalhes');
       if(e.target == modal) fecharModal(); 
