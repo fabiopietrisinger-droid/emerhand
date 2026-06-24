@@ -1,4 +1,21 @@
 {
+  "banners": [
+    {
+      "imagem": "/images/uploads/banner_01.jpg"
+    },
+    {
+      "imagem": "/images/uploads/banner02.jpg"
+    },
+    {
+      "imagem": "/images/uploads/banner03.jpg"
+    },
+    {
+      "imagem": "/images/uploads/banner04.jpg"
+    },
+    {
+      "imagem": "/images/uploads/banner05.jpg"
+    }
+  ],
   "sobre": {
     "titulo_sobre": "EmerHand Custom Guitars",
     "foto_sobre": "/images/uploads/emer.png",
