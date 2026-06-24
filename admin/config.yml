@@ -1,0 +1,21 @@
+backend:
+  name: git-gateway
+  branch: main
+
+media_folder: "images/uploads"
+public_folder: "/images/uploads"
+
+collections:
+  # PRODUTOS (LOJA)
+  - name: "guitarras"
+    label: "Guitarras / Instrumentos"
+    folder: "content/guitarras"
+    create: true
+    slug: "{{slug}}"
+    fields:
+      - { label: "Nome do Instrumento", name: "title", widget: "string" }
+      - { label: "Categoria", name: "categoria", widget: "string" }
+      - { label: "Esta Vendido?", name: "vendido", widget: "boolean", default: false }
+      - { label: "Foto de Capa", name: "image", widget: "image" }
+      - { label: "Galeria de Fotos", name: "galeria", widget: "list", field: { label: "Foto", name: "foto", widget: "image" } }
+      - { label: "Especificações", name: "body", widget: "markdown" }
