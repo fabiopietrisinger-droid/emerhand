@@ -1,0 +1,79 @@
+media:
+  input: images/uploads
+  output: /images/uploads
+
+content:
+  - name: guitarras
+    label: Guitarras
+    type: collection
+    path: content/guitarras
+    format: json
+    fields:
+      - name: title
+        label: Nome do Instrumento
+        type: string
+        required: true
+      - name: categoria
+        label: Categoria
+        type: string
+        required: true
+      - name: vendido
+        label: Está Vendido?
+        type: boolean
+        default: false
+      - name: image
+        label: Foto de Capa Principal
+        type: image
+      - name: galeria
+        label: Galeria de Fotos
+        type: object
+        list: true
+        fields:
+          - name: foto
+            label: Foto Secundária
+            type: image
+      - name: body
+        label: Especificações Completas
+        type: rich-text
+
+  - name: categorias
+    label: Categorias Globais
+    type: collection
+    path: content/categorias
+    format: json
+    fields:
+      - name: title
+        label: Nome da Categoria
+        type: string
+        required: true
+
+  - name: paginas
+    label: Páginas Institucionais
+    type: file
+    path: content/home.json
+    format: json
+    fields:
+      - name: banners
+        label: Banners do Slider
+        type: object
+        list: true
+        fields:
+          - name: imagem
+            label: Imagem do Banner
+            type: image
+          - name: titulo
+            label: Título
+            type: string
+      - name: sobre
+        label: Seção Sobre (Home)
+        type: object
+        fields:
+          - name: titulo_sobre
+            label: Título
+            type: string
+          - name: foto_sobre
+            label: Foto
+            type: image
+          - name: texto_sobre
+            label: Texto Integral
+            type: rich-text
