@@ -464,25 +464,18 @@
     let fotoAtivaIndex = 0;
 
     // === LÓGICA DE MENU MOBILE ===
-    function toggleMenu() {
-      document.getElementById("nav-menu").classList.toggle("active");
-    }
-    
-    function closeMenu() {
-      document.getElementById("nav-menu").classList.remove("active");
-    }
+    function toggleMenu() { document.getElementById("nav-menu").classList.toggle("active"); }
+    function closeMenu() { document.getElementById("nav-menu").classList.remove("active"); }
+    function toggleMobileDropdown() { if(window.innerWidth <= 992) { document.getElementById("drop-modelos").classList.toggle("active-mobile"); } }
 
-    function toggleMobileDropdown() {
-      if(window.innerWidth <= 992) {
-        document.getElementById("drop-modelos").classList.toggle("active-mobile");
-      }
-    }
-
-    // === INICIALIZAÇÃO DA PÁGINA (BUSCANDO DO GITHUB) ===
+    // === INICIALIZAÇÃO DA PÁGINA (BUSCANDO DO GITHUB COM ANTI-CACHE) ===
     async function inicializarSite() {
       try {
+        // QUEBRADOR DE CACHE: Adiciona a data e hora atual em milissegundos na URL
+        const noCache = '?t=' + new Date().getTime();
+
         // 1. Renderiza Categorias (Menus e Filtros)
-        const resCat = await fetch(`https://api.github.com/repos/${GITHUB_USER}/${GITHUB_REPO}/contents/content/categorias`);
+        const resCat = await fetch(`https://api.github.com/repos/${GITHUB_USER}/${GITHUB_REPO}/contents/content/categorias${noCache}`);
         if(resCat.ok) {
           const arquivosCat = await resCat.json();
           const submenu = document.getElementById('submenu-categorias');
@@ -491,7 +484,7 @@
 
           for (const arquivo of arquivosCat) {
             if (arquivo.name.endsWith('.json')) {
-              const resItem = await fetch(arquivo.download_url);
+              const resItem = await fetch(arquivo.download_url + noCache);
               const cat = await resItem.json();
 
               if(submenu) submenu.innerHTML += `<a href="#loja" onclick="filtrarCategoria('${cat.title}'); closeMenu()">${cat.title}</a>`;
@@ -502,28 +495,60 @@
         }
 
         // 2. Renderiza Guitarras
-        const resLista = await fetch(`https://api.github.com/repos/${GITHUB_USER}/${GITHUB_REPO}/contents/content/guitarras`);
+        const resLista = await fetch(`https://api.github.com/repos/${GITHUB_USER}/${GITHUB_REPO}/contents/content/guitarras${noCache}`);
         if(resLista.ok) {
           const arquivos = await resLista.json();
           const grid = document.getElementById('grid-guitarras');
-          grid.innerHTML = ''; // Limpa a mensagem de "Carregando..."
+          grid.innerHTML = ''; 
           
           for (const arquivo of arquivos) {
             if (arquivo.name.endsWith('.json')) {
-              const resItem = await fetch(arquivo.download_url);
+              const resItem = await fetch(arquivo.download_url + noCache);
               const guitarra = await resItem.json();
               todosOsProdutos.push(guitarra);
             }
           }
           renderizarProdutos(todosOsProdutos);
         } else {
-          // Se der erro 404 (Repo Privado ou Pasta Vazia)
-          document.getElementById('grid-guitarras').innerHTML = '<p class="loading" style="grid-column: 1/-1;">Nenhuma guitarra encontrada. Certifique-se de que o repositório é Público e que há itens cadastrados no Pages CMS.</p>';
+          document.getElementById('grid-guitarras').innerHTML = '<p class="loading" style="grid-column: 1/-1;">Nenhuma guitarra encontrada. Certifique-se de que o repositório é Público e que há itens cadastrados.</p>';
+        }
+
+        // 3. Renderiza Institucional (HOME) - Banners e Sobre
+        const resHome = await fetch(`https://api.github.com/repos/${GITHUB_USER}/${GITHUB_REPO}/contents/content/home.json${noCache}`);
+        if(resHome.ok) {
+          const dataHomeRaw = await resHome.json();
+          // Tratamento para decodificar caracteres especiais e acentos do GitHub Base64
+          const decodedContent = decodeURIComponent(escape(atob(dataHomeRaw.content)));
+          const homeData = JSON.parse(decodedContent);
+          
+          // Troca os banners
+          if(homeData.banners && homeData.banners.length > 0) {
+             const hero = document.getElementById('hero');
+             if (hero) hero.style.backgroundImage = `linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)), url('${homeData.banners[0].imagem}')`;
+             
+             const heroTitulo = document.getElementById('hero-titulo');
+             if(heroTitulo && homeData.banners[0].titulo) heroTitulo.innerText = homeData.banners[0].titulo;
+          }
+
+          // Troca a área Sobre
+          if(homeData.sobre) {
+             const conteudoSobre = document.getElementById('conteudo-sobre');
+             if (conteudoSobre) {
+               conteudoSobre.innerHTML = `
+                  <div class="about-img">
+                    <img src="${homeData.sobre.foto_sobre}" alt="Luthieria">
+                  </div>
+                  <div class="about-text">
+                    <h3>${homeData.sobre.titulo_sobre || 'Emerson Santos (Luthier)'}</h3>
+                    <div style="font-size: 11pt; color: #b3b3b3; line-height: 1.6;">${homeData.sobre.texto_sobre || ''}</div>
+                  </div>
+               `;
+             }
+          }
         }
 
       } catch (error) {
         console.error("Erro ao conectar com GitHub:", error);
-        document.getElementById('grid-guitarras').innerHTML = '<p class="loading" style="grid-column: 1/-1;">Falha ao carregar o catálogo. Verifique sua conexão.</p>';
       }
     }
 
@@ -590,14 +615,15 @@
       document.getElementById('modal-categoria').innerText = produtoAtivo.categoria || 'Geral';
       document.getElementById('modal-imagem-principal').src = produtoAtivo.image || 'https://placehold.co/600x400/121212/d4af37?text=Sem+Foto';
       
-      // Galeria Thumbs
       const thumbsContainer = document.getElementById('modal-thumbnails');
       thumbsContainer.innerHTML = '';
       
       if(produtoAtivo.galeria && produtoAtivo.galeria.length > 0) {
         produtoAtivo.galeria.forEach((imgObj, fIdx) => {
           const thumb = document.createElement('img');
-          thumb.src = imgObj.foto;
+          // No Pages CMS, imagens de lista podem vir como string direta ou objeto. Ajuste defensivo:
+          const urlImg = typeof imgObj === 'string' ? imgObj : imgObj.foto;
+          thumb.src = urlImg;
           thumb.className = `thumb-img ${fIdx === 0 ? 'active' : ''}`;
           thumb.onclick = () => alternarFoto(fIdx);
           thumbsContainer.appendChild(thumb);
@@ -609,7 +635,6 @@
         thumbsContainer.appendChild(thumb);
       }
 
-      // Especificações (Rich Text ou Plain Text)
       const tabela = document.getElementById('modal-tabela-specs');
       tabela.innerHTML = '';
       
@@ -629,7 +654,6 @@
         }
       }
 
-      // Link WhatsApp Dinâmico
       const statusText = (produtoAtivo.vendido === true || produtoAtivo.vendido === "true") ? 'encomendar uma réplica da' : 'consultar sobre a';
       const wppLink = `https://wa.me/5511995317881?text=Olá Emerson, gostaria de ${statusText} guitarra ${encodeURIComponent(produtoAtivo.title || 'que vi no site')}.`;
       document.getElementById('modal-btn-wa').href = wppLink;
@@ -642,7 +666,8 @@
     function alternarFoto(index) {
       fotoAtivaIndex = index;
       if(produtoAtivo.galeria && produtoAtivo.galeria.length > 0) {
-        document.getElementById('modal-imagem-principal').src = produtoAtivo.galeria[index].foto;
+        const urlImg = typeof produtoAtivo.galeria[index] === 'string' ? produtoAtivo.galeria[index] : produtoAtivo.galeria[index].foto;
+        document.getElementById('modal-imagem-principal').src = urlImg;
       }
       document.querySelectorAll('.thumb-img').forEach((th, tIdx) => {
         tIdx === index ? th.classList.add('active') : th.classList.remove('active');
