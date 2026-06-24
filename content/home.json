@@ -1,7 +1,8 @@
 {
   "banners": [
     {
-      "imagem": "/images/uploads/banner_01.jpg"
+      "imagem": "/images/uploads/banner_01.jpg",
+      "titulo": "EmerHand Custom Guitars"
     },
     {
       "imagem": "/images/uploads/banner02.jpg"
