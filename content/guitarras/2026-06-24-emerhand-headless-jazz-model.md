@@ -1,5 +1,5 @@
 {
-  "title": "EmerHand Headless JAZZ Model",
+  "title": "EmerHand Headless JAZZ Model v2",
   "categoria": "Headless Jazz",
   "vendido": false,
   "image": "/images/uploads/[Headless Jazz] EmerHand Headless JAZZ Model_CAPA.jpg",
